@@ -1,28 +1,13 @@
-import '../styles/globals.css'
-import { WagmiConfig, createClient, configureChains, mainnet } from 'wagmi'
-import { connectors } from '../utils/Connectors'
-import { publicProvider } from 'wagmi/providers/public'
-
-const { provider, webSocketProvider } = configureChains(
-  [mainnet],
-  [publicProvider()],
-)
- 
-const client = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-  webSocketProvider,
-});
-
-console.log('client', client)
+import "../styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+import { Providers } from "./providers";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <WagmiConfig client={client}>
+    <Providers>
       <Component {...pageProps} />
-    </WagmiConfig>
-  )
+    </Providers>
+  );
 }
 
-export default MyApp
+export default MyApp;
