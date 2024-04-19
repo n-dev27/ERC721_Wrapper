@@ -11,7 +11,7 @@ import {
   trustWallet,
   ledgerWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet, baseSepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 
@@ -29,7 +29,9 @@ const config = getDefaultConfig({
   ],
   chains: [
     mainnet,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
+      ? [baseSepolia]
+      : []),
   ],
   ssr: true,
 });
@@ -40,7 +42,7 @@ export function Providers({ children }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider coolMode>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
