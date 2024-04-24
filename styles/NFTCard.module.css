@@ -4,7 +4,7 @@
 }
 
 .nft_container {
-  background-color: #222528;
+  background-color: #14253d;
   border-color: transparent;
   border-top-left-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
@@ -101,7 +101,7 @@
 }
 
 .nft_textDescription > p {
-  color: #7a7c7e;
+  color: #00fff7;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;

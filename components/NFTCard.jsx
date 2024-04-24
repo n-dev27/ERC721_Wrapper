@@ -36,20 +36,22 @@ const NFTCard = ({ nft }) => {
   };
 
   return (
-    <div className={`${styles.flexCol} ${styles.nft_container}`}>
-      <div>
+    <div
+      className={`${styles.flexCol} ${styles.nft_container} cursor-pointer rounded-3xl`}
+    >
+      <div className="px-2 pt-2">
         <img
           src={image ? image : placeholderImage}
           alt="cover image"
           onError={onImageError}
           width={8}
           height={8}
-          className="rounded-t-[18px]"
+          className="rounded-[18px]"
         ></img>
       </div>
       <div className={`${styles.flexCol} ${styles.nft_textContainer}`}>
         <div>
-          <h3 className="text-white">{nft.name}</h3>
+          <h3 className="text-[#8bacda]">{nft.name}</h3>
           <p>Id: {nft.edition}</p>
           <div>
             <p className="text-[16px]">{`Collection: ${nftContract_Addr.substr(

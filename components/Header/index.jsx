@@ -40,7 +40,7 @@ const Header = () => {
       <header
         className={`header top-0 left-0 z-40 flex w-full items-center bg-transparent ${
           sticky
-            ? "!fixed !z-[9999] !bg-[#1e232e] !bg-opacity-90 shadow-sticky backdrop-blur-sm !transition"
+            ? "!fixed !z-[9999] !bg-[#0d192b] !bg-opacity-90 shadow-sticky backdrop-blur-sm !transition"
             : "absolute"
         }`}
       >
