@@ -7,11 +7,16 @@ const Home = () => {
   const [NFTs, setNFTs] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      let nfts;
-      nfts = await initialFetch();
-      setNFTs(nfts);
-    })();
+    const fetchData = async () => {
+      try {
+        let nfts;
+        nfts = await initialFetch();
+        setNFTs(nfts);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
