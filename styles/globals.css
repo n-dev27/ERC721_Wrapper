@@ -9,7 +9,7 @@
   } */
 
 body {
-  background-color: #1e232e;
+  background-color: #0d192b;
 }
 
 /* .main_container {
@@ -21,3 +21,31 @@ body {
   padding-bottom: 2rem;
   row-gap: 0.75rem;
 } */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../public/assets/font/Inter-VariableFont_slnt,wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../public/assets/font/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Abel";
+  src: url("../public/assets/font/Abel-Regular.ttf") format(("truetype"));
+}
+
+.font_Inter {
+  font-family: Inter;
+}
+
+.font_Roboto {
+  font-family: Roboto;
+}
+
+.font_AAbel {
+  font-family: Abel;
+}

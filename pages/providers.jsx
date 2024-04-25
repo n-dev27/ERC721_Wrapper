@@ -14,10 +14,11 @@ import {
 import { mainnet, baseSepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
+import { config } from "../components/config/config";
 
 const { wallets } = getDefaultWallets();
 
-const config = getDefaultConfig({
+const config1 = getDefaultConfig({
   appName: "ERC721 Wrapper",
   projectId: "YOUR_PROJECT_ID",
   wallets: [
@@ -42,7 +43,7 @@ export function Providers({ children }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider coolMode>{children}</RainbowKitProvider>
+        <RainbowKitProvider>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

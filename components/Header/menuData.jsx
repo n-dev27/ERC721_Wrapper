@@ -7,8 +7,8 @@ const menuData = [
   },
   {
     id: 2,
-    title: "Collection",
-    path: "/collection",
+    title: "Profile",
+    path: "/profile",
     newTab: false,
   },
 ];

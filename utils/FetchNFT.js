@@ -45,17 +45,6 @@ export const fetchNFTsForCollection = async (collection) => {
 };
 
 export const initialFetch = async () => {
-  // // Collection Bored Ape
-  // const baseURL = `https://base-sepolia.g.alchemy.com/v2/${api_key}/getNFTsForCollection/`;
-  // const fetchURL = `${baseURL}?contractAddress=${contractAddr}&withMetadata=${"true"}`;
-  // const nfts = await fetch(fetchURL, requestOptions).then((data) =>
-  //   data.json()
-  // );
-  // if (nfts) {
-  //   console.log("NFTs in collection:", nfts);
-  //   return nfts.nfts;
-  // }
-
   const tempData = [];
   for (let i = 1; i <= 10; i++) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_IPFS_URL}/${i}.json`);
@@ -65,4 +54,16 @@ export const initialFetch = async () => {
   }
 
   return tempData;
+};
+
+export const getOwnerNFTFetch = async (address) => {
+  // Collection Bored Ape
+  const baseURL = `https://base-sepolia.g.alchemy.com/v2/${api_key}/getNFTs/`;
+  const fetchURL = `${baseURL}?owner=${address}`;
+  const nfts = await fetch(fetchURL, requestOptions).then((data) =>
+    data.json()
+  );
+  if (nfts) {
+    return nfts.ownedNfts;
+  }
 };

@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { NFTContext } from "../../utils/context";
 import menuData from "./menuData";
 
 const Header = () => {
-  // Navbar toggle
+  const { selectList, setSelectList } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
