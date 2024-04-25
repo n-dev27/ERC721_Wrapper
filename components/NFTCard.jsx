@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useAccount, useConnect } from "wagmi";
 import { BiCopy } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
+import { Checkbox, Alert } from "@material-tailwind/react";
+import WrapModal from "./ModalComponent/ModalComponent";
+import { NFTContext } from "../utils/context";
 import styles from "../styles/NFTCard.module.css";
 
-const NFTCard = ({ nft }) => {
+const NFTCard = ({ nft, isProfile }) => {
+  const { isConnected } = useAccount();
+
+  const { selectList, setSelectList } = useContext(NFTContext);
   const [copied, setCopied] = useState(false);
+  const [isSelect, setIsSelect] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   const nftContract_Addr = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDR;
 
-  // NFT image from Alchemy
-  // const image = nft.media[0].gateway;
-
-  // NFT image from IPFS
-  const image = `https://ipfs.io/ipfs/QmfEudVfYCLn1eWXYqpSxFohZJ7T5LeFUUEELrEBiGv4EQ/${nft.edition}.png`;
+  const image = isProfile
+    ? nft.media[0].gateway
+    : `https://ipfs.io/ipfs/QmfEudVfYCLn1eWXYqpSxFohZJ7T5LeFUUEELrEBiGv4EQ/${nft.edition}.png`;
 
   const placeholderImage = "./no-image-icon.png";
 
@@ -35,11 +42,41 @@ const NFTCard = ({ nft }) => {
     );
   };
 
+  const handleCheckBox = (nft) => {
+    setIsSelect(!isSelect);
+    let list = [];
+    list.push(nft);
+    setSelectList(list);
+  };
+
+  const handleClick = () => {
+    if (isConnected) {
+      setIsModal(true);
+    }
+  };
+
   return (
     <div
       className={`${styles.flexCol} ${styles.nft_container} cursor-pointer rounded-3xl`}
     >
-      <div className="px-2 pt-2">
+      <WrapModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        image={image}
+        nftData={nft}
+        isProfile={isProfile}
+      />
+      <div className="relative px-2 pt-2" onClick={() => handleCheckBox(nft)}>
+        <div className="absolute right-2">
+          <Checkbox
+            readOnly
+            checked={isSelect}
+            color="indigo"
+            ripple={false}
+            className="h-6 w-6 rounded-full border-gray-900/20 bg-gray-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+          />
+        </div>
+
         <img
           src={image ? image : placeholderImage}
           alt="cover image"
@@ -51,8 +88,8 @@ const NFTCard = ({ nft }) => {
       </div>
       <div className={`${styles.flexCol} ${styles.nft_textContainer}`}>
         <div>
-          <h3 className="text-[#8bacda]">{nft.name}</h3>
-          <p>Id: {nft.edition}</p>
+          <h3 className="text-[#8bacda]">{isProfile ? nft.title : nft.name}</h3>
+          <p>Id: {isProfile ? nft.metadata.edition : nft.edition}</p>
           <div>
             <p className="text-[16px]">{`Collection: ${nftContract_Addr.substr(
               0,
@@ -79,12 +116,15 @@ const NFTCard = ({ nft }) => {
         </div>
       </div>
       <div className={styles.nft_link}>
-        <a
-          target="_blank"
-          href={`https://sepolia.basescan.org/address/${nftContract_Addr}`}
+        <button
+          className={`${
+            isConnected ? "" : "cursor-not-allowed"
+          } flex w-[90%] bg-[#1C76FF] rounded-[20px] h-8 justify-center items-center text-white text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
+          onClick={() => handleClick()}
+          disabled={!isConnected}
         >
-          View on basescan
-        </a>
+          {isProfile ? "UnWrap" : "Wrap"}
+        </button>
       </div>
     </div>
   );
