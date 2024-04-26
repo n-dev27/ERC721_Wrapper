@@ -10,11 +10,17 @@ function MyApp({ Component, pageProps }) {
   const [selectList, setSelectList] = useState([]);
   const [allNFT, setAllNFT] = useState([]);
   const [profileNFT, setProfileNFT] = useState([]);
+  const [tokenBal, setTokenBal] = useState("");
+  const [nftBal, setNFTBal] = useState("");
 
   return (
     <Providers>
       <NFTContext.Provider
         value={{
+          tokenBal,
+          setTokenBal,
+          nftBal,
+          setNFTBal,
           allNFT,
           setAllNFT,
           profileNFT,

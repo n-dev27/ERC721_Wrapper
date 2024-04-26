@@ -112,7 +112,7 @@
   display: flex;
   justify-content: center;
   margin-top: auto;
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   padding-top: 0.5rem;
 }
 

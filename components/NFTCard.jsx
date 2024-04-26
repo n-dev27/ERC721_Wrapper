@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
-import { useAccount, useConnect } from "wagmi";
+import { useEffect, useContext, useState } from "react";
+import { useAccount } from "wagmi";
 import { BiCopy } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
-import { Checkbox, Alert } from "@material-tailwind/react";
+import { Checkbox } from "@material-tailwind/react";
 import WrapModal from "./ModalComponent/ModalComponent";
 import { NFTContext } from "../utils/context";
 import styles from "../styles/NFTCard.module.css";
@@ -22,6 +22,12 @@ const NFTCard = ({ nft, isProfile }) => {
     : `https://ipfs.io/ipfs/QmfEudVfYCLn1eWXYqpSxFohZJ7T5LeFUUEELrEBiGv4EQ/${nft.edition}.png`;
 
   const placeholderImage = "./no-image-icon.png";
+
+  useEffect(() => {
+    if (selectList.length === 0) {
+      setIsSelect(false);
+    }
+  }, [selectList]);
 
   const onImageError = (e) => {
     e.target.src = placeholderImage;
@@ -43,10 +49,21 @@ const NFTCard = ({ nft, isProfile }) => {
   };
 
   const handleCheckBox = (nft) => {
+    // Toggle the isSelect state for the current NFT
     setIsSelect(!isSelect);
-    let list = [];
-    list.push(nft);
-    setSelectList(list);
+
+    // If the current state is false (NFT is not selected), add it to the selectList
+    if (!isProfile) {
+      if (isSelect === false) {
+        setSelectList((prevList) => [...prevList, nft]); // append nft to the existing selectList
+      }
+      // If the current state is true (NFT is selected), remove it from the selectList
+      else {
+        setSelectList((prevList) =>
+          prevList.filter((item) => item?.edition !== nft?.edition)
+        );
+      }
+    }
   };
 
   const handleClick = () => {
@@ -119,7 +136,7 @@ const NFTCard = ({ nft, isProfile }) => {
         <button
           className={`${
             isConnected ? "" : "cursor-not-allowed"
-          } flex w-[90%] bg-[#1C76FF] rounded-[20px] h-8 justify-center items-center text-white text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
+          } flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
           onClick={() => handleClick()}
           disabled={!isConnected}
         >

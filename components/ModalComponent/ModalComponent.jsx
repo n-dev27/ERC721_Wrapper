@@ -6,6 +6,7 @@ import {
   writeContract,
   waitForTransactionReceipt,
 } from "@wagmi/core";
+import { ScaleLoader } from "react-spinners";
 import { initialFetch, getOwnerNFTFetch } from "../../utils/FetchNFT";
 import SellTokenInput from "./SellInputComponent";
 import SellTokenOutput from "./SellOutputComponent";
@@ -21,12 +22,17 @@ export default function WrapModal({
   nftData,
   isProfile,
 }) {
-  const { allNFT, setAllNFT, profileNFT, setProfileNFT } =
-    useContext(NFTContext);
-  const [inputTokenAmount, setInputTokenAmount] = useState("");
-  const [outputTokenAmount, setOutputTokenAmount] = useState("");
-  const [tokenBal, setTokenBal] = useState("");
-  const [nftBal, setNFTBal] = useState("");
+  const {
+    allNFT,
+    setAllNFT,
+    profileNFT,
+    setProfileNFT,
+    tokenBal,
+    setTokenBal,
+    nftBal,
+    setNFTBal,
+  } = useContext(NFTContext);
+
   const [loading, setLoading] = useState(false);
   const [isApprove, setIsApprove] = useState(true);
 
@@ -70,6 +76,7 @@ export default function WrapModal({
   };
 
   const clickWrap = async () => {
+    setIsApprove(true);
     if (!isApprove || !isProfile) {
       const result = await executeContract(isProfile);
       return;
@@ -99,10 +106,9 @@ export default function WrapModal({
           console.error("Receipt failed");
           setLoading(false);
           throw new Error("Receipt Failed");
-        } else {
-          setIsApprove(false);
-          setLoading(false);
         }
+        setIsApprove(false);
+        setLoading(false);
       } catch (error) {
         setLoading(false);
         if (error.code === 4001) {
@@ -229,20 +235,12 @@ export default function WrapModal({
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                inputTokenAmount={inputTokenAmount}
-                                setInputTokenAmount={setInputTokenAmount}
-                                outputTokenAmount={outputTokenAmount}
-                                setOutputTokenAmount={setOutputTokenAmount}
                               />
                             </div>
                             <div>
                               <SellTokenInput
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                inputTokenAmount={inputTokenAmount}
-                                setInputTokenAmount={setInputTokenAmount}
-                                outputTokenAmount={outputTokenAmount}
-                                setOutputTokenAmount={setOutputTokenAmount}
                               />
                             </div>
                           </>
@@ -252,20 +250,12 @@ export default function WrapModal({
                               <SellTokenInput
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                inputTokenAmount={inputTokenAmount}
-                                setInputTokenAmount={setInputTokenAmount}
-                                outputTokenAmount={outputTokenAmount}
-                                setOutputTokenAmount={setOutputTokenAmount}
                               />
                             </div>
                             <div>
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                inputTokenAmount={inputTokenAmount}
-                                setInputTokenAmount={setInputTokenAmount}
-                                outputTokenAmount={outputTokenAmount}
-                                setOutputTokenAmount={setOutputTokenAmount}
                               />
                             </div>
                           </>
@@ -273,25 +263,26 @@ export default function WrapModal({
                       </div>
                       <button
                         className={`${
-                          loading || isProfile
-                            ? nftBal < 1
-                            : tokenBal < 1
+                          loading || (isProfile ? nftBal < 1 : tokenBal < 1)
                             ? "cursor-not-allowed"
                             : ""
                         } flex w-full bg-[#1C76FF] rounded-[20px] h-16 justify-center items-center text-white text-2xl cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
                         onClick={() => {
                           if (
-                            !loading && isProfile ? nftBal >= 1 : tokenBal >= 1
+                            !loading &&
+                            (isProfile ? nftBal >= 1 : tokenBal >= 1)
                           ) {
                             clickWrap();
                           }
                         }}
                       >
                         {loading ? (
-                          <div className="flex items-center justify-center space-x-2">
-                            <div className="w-2 h-2 rounded-full animate-pulse bg-white"></div>
-                            <div className="w-2 h-2 rounded-full animate-pulse bg-white"></div>
-                            <div className="w-2 h-2 rounded-full animate-pulse bg-white"></div>
+                          <div className="w-full h-full flex justify-center items-center">
+                            <ScaleLoader
+                              color="#ffffff"
+                              margin={1}
+                              height={20}
+                            />
                           </div>
                         ) : isProfile ? (
                           isApprove ? (

@@ -8,7 +8,8 @@ import nftABI from "../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../utils/context";
 
 const Home = () => {
-  const { allNFT, setAllNFT } = useContext(NFTContext);
+  const { selectList, setSelecetList, allNFT, setAllNFT } =
+    useContext(NFTContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,13 +32,13 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [selectList]);
 
   return (
     <div className={`${styles.flexCol} ${styles.main_container}`}>
       <div className={styles.gridContainerNFT}>
         {allNFT &&
-          allNFT.length &&
+          allNFT.length > 0 &&
           allNFT.map((nft, idx) => {
             return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
           })}
