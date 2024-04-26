@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Providers } from "./providers";
 import Header from "../components/Header";
 import ScrollToTop from "../components/ScrollToTop";

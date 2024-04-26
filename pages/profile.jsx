@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAccount } from "wagmi";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
