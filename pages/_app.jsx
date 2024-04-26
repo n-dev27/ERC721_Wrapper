@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import React, { useState } from "react";
-import { Providers } from "./providers";
+import { Providers } from "../components/config/providers";
 import Header from "../components/Header";
 import ScrollToTop from "../components/ScrollToTop";
 import { NFTContext } from "../utils/context";

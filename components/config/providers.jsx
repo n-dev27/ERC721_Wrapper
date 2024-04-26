@@ -14,7 +14,7 @@ import {
 import { mainnet, baseSepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
-import { config } from "../components/config/config";
+import { config } from "./config";
 
 const { wallets } = getDefaultWallets();
 
