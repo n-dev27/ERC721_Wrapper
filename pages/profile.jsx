@@ -20,6 +20,7 @@ const Profile = () => {
               value.contract.address.toLowerCase() ===
               process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS.toLowerCase()
           );
+
           setProfileNFT(resultingArray);
         } catch (err) {
           console.error(err);
@@ -33,7 +34,7 @@ const Profile = () => {
     <div className={`${styles.flexCol} ${styles.main_container}`}>
       <div className={styles.gridContainerNFT}>
         {profileNFT &&
-          profileNFT.length &&
+          profileNFT.length > 0 &&
           profileNFT.map((nft, idx) => {
             return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
           })}
