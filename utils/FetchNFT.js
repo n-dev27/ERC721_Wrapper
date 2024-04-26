@@ -45,9 +45,10 @@ export const fetchNFTsForCollection = async (collection) => {
 };
 
 export const initialFetch = async () => {
+  const base = process.env.NEXT_PUBLIC_IPFS_URL;
   const tempData = [];
   for (let i = 1; i <= 10; i++) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_IPFS_URL}/${i}.json`);
+    const res = await fetch(`${base}/${i}.json`);
     const json = await res.json();
 
     tempData.push(json);
