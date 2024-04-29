@@ -20,11 +20,14 @@ const Home = () => {
       try {
         let nfts;
         nfts = await initialFetch();
+        console.log("nfts === ", nfts);
         const getWrappedTokens = await readContract(config, {
-          address: contractAddr,
+          address: "0xc6c66E9641ECFcF8C4E2a9116c6f23A0f449BF47",
           abi: nftABI,
           functionName: "getWrappedTokenIds",
+          chainId: 84532,
         });
+        console.log("getWrappedTokens === ", getWrappedTokens);
 
         const transformedIDS = getWrappedTokens.map((id) => Number(id));
 
