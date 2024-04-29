@@ -46,7 +46,12 @@ export const fetchNFTsForCollection = async (collection) => {
 
 export const initialFetch = async () => {
   const base = process.env.NEXT_PUBLIC_IPFS_URL;
-  const response = await fetch(base);
+  const response = await fetch(base, {
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const json = await response.json();
 
   return json.data;
