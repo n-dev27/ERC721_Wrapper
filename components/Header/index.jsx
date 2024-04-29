@@ -10,6 +10,8 @@ import {
   waitForTransactionReceipt,
 } from "@wagmi/core";
 import { PuffLoader } from "react-spinners";
+import toast, { toastConfig } from "react-simple-toasts";
+import "react-simple-toasts/dist/theme/light.css"; // choose your theme
 import { config } from "../config/config";
 import { NFTContext } from "../../utils/context";
 import { initialFetch } from "../../utils/FetchNFT";
@@ -29,6 +31,8 @@ const Header = () => {
 
   const tokenAddr = process.env.NEXT_PUBLIC_HYBRIDS_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
+
+  toastConfig({ theme: "light" }); // configure global toast settings, like theme
 
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
@@ -111,6 +115,7 @@ const Header = () => {
 
   const reFetchNFT = async () => {
     try {
+      toast("Multiwrap is done successfully");
       const result = await initialFetch();
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,

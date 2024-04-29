@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useContext } from "react";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
@@ -6,6 +8,8 @@ import { config } from "../components/config/config";
 import { readContract } from "@wagmi/core";
 import nftABI from "../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../utils/context";
+
+const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
 
 const Home = () => {
   const { selectList, setSelecetList, allNFT, setAllNFT } =
@@ -17,10 +21,11 @@ const Home = () => {
         let nfts;
         nfts = await initialFetch();
         const getWrappedTokens = await readContract(config, {
-          address: process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS,
+          address: contractAddr,
           abi: nftABI,
           functionName: "getWrappedTokenIds",
         });
+
         const transformedIDS = getWrappedTokens.map((id) => Number(id));
 
         const resultingArray = nfts.filter(

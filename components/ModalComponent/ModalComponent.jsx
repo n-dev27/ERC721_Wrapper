@@ -7,6 +7,8 @@ import {
   waitForTransactionReceipt,
 } from "@wagmi/core";
 import { ScaleLoader } from "react-spinners";
+import toast, { toastConfig } from "react-simple-toasts";
+import "react-simple-toasts/dist/theme/light.css"; // choose your theme
 import { initialFetch, getOwnerNFTFetch } from "../../utils/FetchNFT";
 import SellTokenInput from "./SellInputComponent";
 import SellTokenOutput from "./SellOutputComponent";
@@ -40,7 +42,15 @@ export default function WrapModal({
   const tokenAddr = process.env.NEXT_PUBLIC_HYBRIDS_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
 
+  const toast_string = isProfile
+    ? isApprove
+      ? "Approve is done successfully"
+      : "Unwrap is done successfully"
+    : "Wrap is done successfully";
+
   const { address } = useAccount();
+
+  toastConfig({ theme: "light" }); // configure global toast settings, like theme
 
   useEffect(() => {
     const fetchMarketPrices = async () => {
@@ -107,6 +117,7 @@ export default function WrapModal({
           setLoading(false);
           throw new Error("Receipt Failed");
         }
+        toast(toast_string);
         setIsApprove(false);
         setLoading(false);
       } catch (error) {
@@ -176,6 +187,7 @@ export default function WrapModal({
   };
 
   const reFetchNFT = async (isProfile) => {
+    toast(toast_string);
     setIsModal(false);
     try {
       if (isProfile) {

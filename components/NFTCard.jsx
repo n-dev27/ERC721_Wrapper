@@ -83,16 +83,25 @@ const NFTCard = ({ nft, isProfile }) => {
         nftData={nft}
         isProfile={isProfile}
       />
-      <div className="relative px-2 pt-2" onClick={() => handleCheckBox(nft)}>
-        <div className="absolute right-2">
-          <Checkbox
-            readOnly
-            checked={isSelect}
-            color="indigo"
-            ripple={false}
-            className="h-6 w-6 rounded-full border-gray-900/20 bg-gray-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-          />
-        </div>
+      <div
+        className="relative px-2 pt-2"
+        onClick={() => {
+          if (!isProfile) {
+            handleCheckBox(nft);
+          }
+        }}
+      >
+        {!isProfile && (
+          <div className="absolute right-2">
+            <Checkbox
+              readOnly
+              checked={isSelect}
+              color="indigo"
+              ripple={false}
+              className="h-6 w-6 rounded-full border-gray-900/20 bg-gray-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+            />
+          </div>
+        )}
 
         <img
           src={image ? image : placeholderImage}

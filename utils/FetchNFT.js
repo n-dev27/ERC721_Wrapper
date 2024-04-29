@@ -46,15 +46,10 @@ export const fetchNFTsForCollection = async (collection) => {
 
 export const initialFetch = async () => {
   const base = process.env.NEXT_PUBLIC_IPFS_URL;
-  const tempData = [];
-  for (let i = 1; i <= 10; i++) {
-    const res = await fetch(`${base}/${i}.json`);
-    const json = await res.json();
+  const response = await fetch(base);
+  const json = await response.json();
 
-    tempData.push(json);
-  }
-
-  return tempData;
+  return json.data;
 };
 
 export const getOwnerNFTFetch = async (address) => {
