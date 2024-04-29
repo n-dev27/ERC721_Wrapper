@@ -29,6 +29,8 @@ const Header = () => {
 
   const { address } = useAccount();
 
+  console.log("address === ", address);
+
   const tokenAddr = process.env.NEXT_PUBLIC_HYBRIDS_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
 
@@ -204,12 +206,23 @@ const Header = () => {
                     {menuData.map((menuItem, index) => (
                       <li key={menuItem.id} className="group relative">
                         {menuItem.path ? (
-                          <Link
-                            href={menuItem.path}
-                            className={`flex py-2 text-base text-white group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
-                          >
-                            {menuItem.title}
-                          </Link>
+                          menuItem.id === 2 ? (
+                            address && (
+                              <Link
+                                href={menuItem.path}
+                                className={`flex py-2 text-base text-white group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                              >
+                                {menuItem.title}
+                              </Link>
+                            )
+                          ) : (
+                            <Link
+                              href={menuItem.path}
+                              className={`flex py-2 text-base text-white group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                            >
+                              {menuItem.title}
+                            </Link>
+                          )
                         ) : (
                           <>
                             <a
