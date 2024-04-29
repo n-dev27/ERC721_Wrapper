@@ -45,7 +45,7 @@ export const fetchNFTsForCollection = async (collection) => {
 };
 
 export const initialFetch = async () => {
-  const base = process.env.NEXT_PUBLIC_IPFS_URL;
+  const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
   const response = await fetch(base, {
     mode: "cors",
     headers: {

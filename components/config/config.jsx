@@ -1,5 +1,5 @@
-import { http, createConfig } from "wagmi";
-import { mainnet, baseSepolia } from "wagmi/chains";
+import { http, createConfig } from "@wagmi/core";
+import { mainnet, baseSepolia } from "@wagmi/core/chains";
 import { metaMask } from "wagmi/connectors";
 
 export const config = createConfig({
