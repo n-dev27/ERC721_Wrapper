@@ -57,11 +57,17 @@ const Home = () => {
   ) : (
     <div className={`${styles.flexCol} ${styles.main_container}`}>
       <div className={styles.gridContainerNFT}>
-        {allNFT &&
-          allNFT.length > 0 &&
+        {allNFT && allNFT.length > 0 ? (
           allNFT.map((nft, idx) => {
             return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
-          })}
+          })
+        ) : (
+          <div className="w-full">
+            <h2 className="text-white w-full flex justify-center">
+              There is no NFT to mint!
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

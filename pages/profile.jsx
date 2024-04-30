@@ -44,11 +44,17 @@ const Profile = () => {
   ) : (
     <div className={`${styles.flexCol} ${styles.main_container}`}>
       <div className={styles.gridContainerNFT}>
-        {profileNFT &&
-          profileNFT.length > 0 &&
+        {profileNFT && profileNFT.length > 0 ? (
           profileNFT.map((nft, idx) => {
             return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
-          })}
+          })
+        ) : (
+          <div className="w-full">
+            <h2 className="text-white w-full flex justify-center">
+              You did not mint any NFT yet!
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );
