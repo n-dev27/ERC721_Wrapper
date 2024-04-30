@@ -26,7 +26,7 @@ export default function WrapModal({
 }) {
   const {
     isLoading,
-    seIsLoading,
+    setIsLoading,
     allNFT,
     setAllNFT,
     profileNFT,
@@ -189,7 +189,7 @@ export default function WrapModal({
   };
 
   const reFetchNFT = async (isProfile) => {
-    seIsLoading(true);
+    setIsLoading(true);
     toast(toast_string);
     setIsModal(false);
     try {
@@ -200,6 +200,7 @@ export default function WrapModal({
             value.contract.address.toLowerCase() === contractAddr.toLowerCase()
         );
         setProfileNFT(resultingArray);
+        setIsLoading(false);
       } else {
         const result = await initialFetch();
         const getWrappedTokens = await readContract(config, {
@@ -213,11 +214,11 @@ export default function WrapModal({
           (value) => !transformedIDS.includes(value.edition)
         );
         setAllNFT(resultingArray);
-        seIsLoading(false);
+        setIsLoading(false);
       }
     } catch (err) {
       console.log("err === ", err);
-      seIsLoading(false);
+      setIsLoading(false);
     }
   };
 

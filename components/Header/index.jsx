@@ -20,16 +20,21 @@ import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 
 const Header = () => {
-  const { setAllNFT, selectList, setSelectList, setTokenBal, setNFTBal } =
-    useContext(NFTContext);
+  const {
+    isLoading,
+    setIsLoading,
+    setAllNFT,
+    selectList,
+    setSelectList,
+    setTokenBal,
+    setNFTBal,
+  } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1);
   const [sticky, setSticky] = useState(false);
 
   const { address } = useAccount();
-
-  console.log("address === ", address);
 
   const tokenAddr = process.env.NEXT_PUBLIC_HYBRIDS_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
@@ -117,6 +122,7 @@ const Header = () => {
 
   const reFetchNFT = async () => {
     try {
+      setIsLoading(true);
       toast("Multiwrap is done successfully");
       const result = await initialFetch();
       const getWrappedTokens = await readContract(config, {
@@ -131,8 +137,10 @@ const Header = () => {
         (value) => !transformedIDS.includes(value.edition)
       );
       setAllNFT(resultingArray);
+      setIsLoading(false);
     } catch (err) {
       console.log("err === ", err);
+      setIsLoading(false);
     }
   };
 
