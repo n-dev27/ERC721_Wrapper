@@ -25,6 +25,8 @@ export default function WrapModal({
   isProfile,
 }) {
   const {
+    isLoading,
+    seIsLoading,
     allNFT,
     setAllNFT,
     profileNFT,
@@ -187,6 +189,7 @@ export default function WrapModal({
   };
 
   const reFetchNFT = async (isProfile) => {
+    seIsLoading(true);
     toast(toast_string);
     setIsModal(false);
     try {
@@ -210,9 +213,11 @@ export default function WrapModal({
           (value) => !transformedIDS.includes(value.edition)
         );
         setAllNFT(resultingArray);
+        seIsLoading(false);
       }
     } catch (err) {
       console.log("err === ", err);
+      seIsLoading(false);
     }
   };
 

@@ -2,19 +2,22 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { useAccount } from "wagmi";
+import { HashLoader } from "react-spinners";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { getOwnerNFTFetch } from "../utils/FetchNFT";
 import { NFTContext } from "../utils/context";
 
 const Profile = () => {
-  const { profileNFT, setProfileNFT } = useContext(NFTContext);
+  const { isLoading, setIsLoading, profileNFT, setProfileNFT } =
+    useContext(NFTContext);
   const { address } = useAccount();
 
   useEffect(() => {
     const fetchData = async () => {
       if (address) {
         try {
+          setIsLoading(true);
           let nfts;
           nfts = await getOwnerNFTFetch(address);
           const resultingArray = nfts.filter(
@@ -24,15 +27,21 @@ const Profile = () => {
           );
 
           setProfileNFT(resultingArray);
+          setIsLoading(false);
         } catch (err) {
           console.error(err);
+          setIsLoading(false);
         }
       }
     };
     fetchData();
   }, [address]);
 
-  return (
+  return isLoading ? (
+    <div className="w-full h-screen flex justify-center items-center">
+      <HashLoader color="#f4fffd" size={100} loading />
+    </div>
+  ) : (
     <div className={`${styles.flexCol} ${styles.main_container}`}>
       <div className={styles.gridContainerNFT}>
         {profileNFT &&

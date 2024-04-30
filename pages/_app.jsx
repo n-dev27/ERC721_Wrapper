@@ -12,11 +12,14 @@ function MyApp({ Component, pageProps }) {
   const [profileNFT, setProfileNFT] = useState([]);
   const [tokenBal, setTokenBal] = useState("");
   const [nftBal, setNFTBal] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Providers>
       <NFTContext.Provider
         value={{
+          isLoading,
+          setIsLoading,
           tokenBal,
           setTokenBal,
           nftBal,
