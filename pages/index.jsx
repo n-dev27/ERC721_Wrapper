@@ -10,7 +10,7 @@ import { readContract } from "@wagmi/core";
 import nftABI from "../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../utils/context";
 
-const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
+const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
 const Home = () => {
   const {

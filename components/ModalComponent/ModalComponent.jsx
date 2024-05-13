@@ -41,8 +41,8 @@ export default function WrapModal({
   const [isApprove, setIsApprove] = useState(true);
 
   const placeholderImage = "./no-image-icon.png";
-  const tokenAddr = process.env.NEXT_PUBLIC_HYBRIDS_TOKEN_ADDRESS;
-  const contractAddr = process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS;
+  const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
+  const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
   const toast_string = isProfile
     ? isApprove

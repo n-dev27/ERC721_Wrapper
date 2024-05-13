@@ -53,7 +53,7 @@ const SellTokenInput = (props) => {
         <div className="flex items-center">
           <div type="button" className={style.sellInputSelector}>
             <div className="flex gap-1 items-center h-full">
-              <p className="text-[20px] text-white font_Roboto">HYBRID</p>
+              <p className="text-[20px] text-white font_Roboto">BOHEDZ</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { useAccount } from "wagmi";
 import { HashLoader } from "react-spinners";
 import NFTCard from "../components/NFTCard";
@@ -23,7 +23,7 @@ const Profile = () => {
           const resultingArray = nfts.filter(
             (value) =>
               value.contract.address.toLowerCase() ===
-              process.env.NEXT_PUBLIC_HYBRIDS_WRAPPER_ADDRESS.toLowerCase()
+              process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS.toLowerCase()
           );
 
           setProfileNFT(resultingArray);
