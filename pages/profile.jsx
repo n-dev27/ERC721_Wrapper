@@ -7,7 +7,6 @@ import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { getOwnerNFTFetch } from "../utils/FetchNFT";
 import { NFTContext } from "../utils/context";
-import backgroundImage from "../public/background.png";
 
 const Profile = () => {
   const { isLoading, setIsLoading, profileNFT, setProfileNFT } =
