@@ -147,7 +147,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header top-0 left-0 z-40 flex w-full items-center bg-transparent ${
+        className={`header top-0 left-0 z-40 flex w-full items-center bg-[#0d192b] !bg-opacity-90 ${
           sticky
             ? "!fixed !z-[9999] !bg-[#0d192b] !bg-opacity-90 shadow-sticky backdrop-blur-sm !transition"
             : "absolute"
@@ -286,7 +286,6 @@ const Header = () => {
                 ) : (
                   <></>
                 )}
-
                 <div className="flex p-3">
                   <ConnectButton />
                 </div>

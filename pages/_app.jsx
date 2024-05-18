@@ -5,6 +5,7 @@ import { Providers } from "../components/config/providers";
 import Header from "../components/Header";
 import ScrollToTop from "../components/ScrollToTop";
 import { NFTContext } from "../utils/context";
+import styles from "../styles/index.module.css";
 
 function MyApp({ Component, pageProps }) {
   const [selectList, setSelectList] = useState([]);
@@ -32,9 +33,11 @@ function MyApp({ Component, pageProps }) {
           setSelectList,
         }}
       >
-        <Header />
-        <Component {...pageProps} />
-        <ScrollToTop />
+        <div className={`${styles.homeCSS} overflow-y-hidden`}>
+          <Header />
+          <Component {...pageProps} />
+          <ScrollToTop />
+        </div>
       </NFTContext.Provider>
     </Providers>
   );

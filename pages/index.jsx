@@ -54,21 +54,21 @@ const Home = () => {
     <div className={`${styles.flexCol} h-screen`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
-  ) : (
-    <div className={`${styles.flexCol} ${styles.main_container}`}>
-      <div className={styles.gridContainerNFT}>
-        {allNFT && allNFT.length > 0 ? (
-          allNFT.map((nft, idx) => {
-            return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
-          })
-        ) : (
-          <div className="w-full">
-            <h2 className="text-white w-full flex justify-center">
-              There is no NFT to mint!
-            </h2>
-          </div>
-        )}
+  ) : allNFT && allNFT.length > 0 ? (
+    <div
+      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-100px)] mt-24`}
+    >
+      <div className={`${styles.gridContainerNFT}`}>
+        {allNFT.map((nft, idx) => {
+          return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
+        })}
       </div>
+    </div>
+  ) : (
+    <div className="w-full">
+      <h2 className="text-white text-5xl w-full flex justify-center">
+        There is no NFT to mint!
+      </h2>
     </div>
   );
 };
