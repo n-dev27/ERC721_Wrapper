@@ -45,7 +45,7 @@ const Profile = () => {
     <div
       className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-96px)] mt-24`}
     >
-      <div className={styles.gridContainerNFT}>
+      <div className={`${styles.gridContainerNFT} ${styles.example}`}>
         {profileNFT.map((nft, idx) => {
           return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
         })}

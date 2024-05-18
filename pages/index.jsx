@@ -58,7 +58,7 @@ const Home = () => {
     <div
       className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-100px)] mt-24`}
     >
-      <div className={`${styles.gridContainerNFT}`}>
+      <div className={`${styles.gridContainerNFT} ${styles.example}`}>
         {allNFT.map((nft, idx) => {
           return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
         })}
