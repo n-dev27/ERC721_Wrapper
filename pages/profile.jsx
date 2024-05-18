@@ -7,6 +7,7 @@ import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { getOwnerNFTFetch } from "../utils/FetchNFT";
 import { NFTContext } from "../utils/context";
+import backgroundImage from "../public/background.png";
 
 const Profile = () => {
   const { isLoading, setIsLoading, profileNFT, setProfileNFT } =
@@ -38,7 +39,7 @@ const Profile = () => {
   }, [address]);
 
   return isLoading ? (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className={`${styles.flexCol} h-screen`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
   ) : (
@@ -49,7 +50,7 @@ const Profile = () => {
             return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
           })
         ) : (
-          <div className="w-full">
+          <div className="w-full h-screen">
             <h2 className="text-white w-full flex justify-center">
               You did not mint any NFT yet!
             </h2>

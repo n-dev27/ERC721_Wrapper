@@ -9,6 +9,7 @@ import { config } from "../components/config/config";
 import { readContract } from "@wagmi/core";
 import nftABI from "../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../utils/context";
+import backgroundImage from "../public/background.png";
 
 const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
@@ -51,7 +52,7 @@ const Home = () => {
   }, []);
 
   return isLoading ? (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className={`${styles.flexCol} h-screen`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
   ) : (
