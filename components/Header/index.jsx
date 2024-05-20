@@ -71,7 +71,7 @@ const Header = () => {
             args: [address],
             chainId: 84532,
           });
-          setRewardValue(Number(rewardResult));
+          setRewardValue(Number(rewardResult) / 10 ** 18);
         } catch (err) {
           console.error(err);
         }
