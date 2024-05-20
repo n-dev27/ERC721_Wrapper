@@ -1,42 +1,26 @@
 [
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "feeSupplyer_",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "feeSupplyer_", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "owner", "type": "address" }
     ],
     "name": "OwnableInvalidOwner",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
   },
-  {
-    "inputs": [],
-    "name": "ReentrancyGuardReentrantCall",
-    "type": "error"
-  },
+  { "inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error" },
   {
     "anonymous": false,
     "inputs": [
@@ -78,28 +62,14 @@
   {
     "inputs": [],
     "name": "MAX_FEE_RECIPIENTS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient_",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "feeRate_",
-        "type": "uint256"
-      }
+      { "internalType": "address", "name": "recipient_", "type": "address" },
+      { "internalType": "uint256", "name": "feeRate_", "type": "uint256" }
     ],
     "name": "addFeeRecipient",
     "outputs": [],
@@ -109,26 +79,14 @@
   {
     "inputs": [],
     "name": "feeSupplyer",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "isFeeRecipientSet",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -142,23 +100,13 @@
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient_",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "recipient_", "type": "address" }
     ],
     "name": "removeFeeRecipient",
     "outputs": [],
@@ -174,11 +122,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "feeSupplyer_",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "feeSupplyer_", "type": "address" }
     ],
     "name": "setFeeSupplyer",
     "outputs": [],
@@ -200,19 +144,12 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
-  }
+  { "stateMutability": "payable", "type": "receive" }
 ]

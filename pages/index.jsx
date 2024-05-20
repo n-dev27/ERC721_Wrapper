@@ -51,7 +51,7 @@ const Home = () => {
   }, []);
 
   return isLoading ? (
-    <div className={`${styles.flexCol} h-screen`}>
+    <div className={`${styles.flexCol} justify-center h-screen`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
   ) : allNFT && allNFT.length > 0 ? (

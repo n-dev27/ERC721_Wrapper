@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import {
@@ -18,10 +19,10 @@ import { initialFetch } from "../../utils/FetchNFT";
 import menuData from "./menuData";
 import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
+import escrowABI from "../../contract/ABI/EscrowSharingNFTHolder.json";
 
 const Header = () => {
   const {
-    isLoading,
     setIsLoading,
     setAllNFT,
     selectList,
@@ -31,13 +32,17 @@ const Header = () => {
   } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1);
   const [sticky, setSticky] = useState(false);
+  const [rewardValue, setRewardValue] = useState(false);
 
   const { address } = useAccount();
+  const router = useRouter();
 
   const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
+  const escrowAddr = process.env.NEXT_PUBLIC_ESCROW_NFT_HOLDER;
 
   toastConfig({ theme: "light" }); // configure global toast settings, like theme
 
@@ -55,7 +60,27 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
-  });
+
+    const fetchData = async () => {
+      if (address) {
+        try {
+          const rewardResult = await readContract(config, {
+            address: escrowAddr,
+            abi: escrowABI,
+            functionName: "checkClaimableRewards",
+            args: [address],
+            chainId: 84532,
+          });
+          setRewardValue(Number(rewardResult));
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        router.push("/");
+      }
+    };
+    fetchData();
+  }, [address]);
 
   const handleSubmenu = (index) => {
     if (openIndex === index) {
@@ -112,6 +137,53 @@ const Header = () => {
       await reFetchNFT();
     } catch (error) {
       setLoading(false);
+      if (error.code === 4001) {
+        console.log("Transaction was not approved by user.");
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleClaim = async () => {
+    setLoading2(true);
+    try {
+      const result = await writeContract(config, {
+        address: escrowAddr,
+        abi: escrowABI,
+        functionName: "claimRewards",
+        args: [address],
+      });
+
+      console.log("result === ", result);
+      if (!result) {
+        setLoading2(false);
+        console.error(`Failed to execute ${"wrap"} function on contract`);
+        throw new Error("Transaction Failed");
+      }
+
+      const transaction = await waitForTransactionReceipt(config, {
+        hash: result,
+      });
+
+      if (!transaction) {
+        console.error("Receipt failed");
+        setLoading2(false);
+        throw new Error("Receipt Failed");
+      }
+
+      const rewardResult = await readContract(config, {
+        address: escrowAddr,
+        abi: escrowABI,
+        functionName: "checkClaimableRewards",
+        args: [address],
+        chainId: 84532,
+      });
+
+      setRewardValue(Number(rewardResult));
+      setLoading2(false);
+    } catch (error) {
+      setLoading2(false);
       if (error.code === 4001) {
         console.log("Transaction was not approved by user.");
       } else {
@@ -269,7 +341,7 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="flex items-center justify-end pr-16 lg:pr-0">
+              <div className="flex flex-row gap-3 items-center justify-end pr-16 lg:pr-0">
                 {selectList.length > 0 ? (
                   <button
                     className="min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
@@ -286,7 +358,23 @@ const Header = () => {
                 ) : (
                   <></>
                 )}
-                <div className="flex p-3">
+                {address ? (
+                  <button
+                    className="min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
+                    onClick={() => handleClaim()}
+                  >
+                    {loading2 ? (
+                      <div className="w-full h-full flex justify-center items-center">
+                        <PuffLoader color="#ffff" size={20} />
+                      </div>
+                    ) : (
+                      `Claim reward: ${rewardValue}`
+                    )}
+                  </button>
+                ) : (
+                  <></>
+                )}
+                <div className="flex">
                   <ConnectButton />
                 </div>
               </div>

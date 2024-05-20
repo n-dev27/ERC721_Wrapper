@@ -25,11 +25,8 @@ export default function WrapModal({
   isProfile,
 }) {
   const {
-    isLoading,
     setIsLoading,
-    allNFT,
     setAllNFT,
-    profileNFT,
     setProfileNFT,
     tokenBal,
     setTokenBal,

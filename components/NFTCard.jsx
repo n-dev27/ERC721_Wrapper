@@ -112,7 +112,9 @@ const NFTCard = ({ nft, isProfile }) => {
           className="rounded-[18px]"
         ></img>
       </div>
-      <div className={`${styles.flexCol} ${styles.nft_textContainer}`}>
+      <div
+        className={`${styles.flexCol} ${styles.nft_textContainer} opacity-80`}
+      >
         <div>
           <h3 className="text-[#8bacda]">{isProfile ? nft.title : nft.name}</h3>
           <p>Id: {isProfile ? nft.metadata.edition : nft.edition}</p>

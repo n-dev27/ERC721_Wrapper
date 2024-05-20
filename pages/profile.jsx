@@ -38,12 +38,12 @@ const Profile = () => {
   }, [address]);
 
   return isLoading ? (
-    <div className={`${styles.flexCol} h-screen`}>
+    <div className={`${styles.flexCol} justify-center h-screen`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
   ) : profileNFT && profileNFT.length > 0 ? (
     <div
-      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-96px)] mt-24`}
+      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-100px)] mt-24`}
     >
       <div className={`${styles.gridContainerNFT} ${styles.example}`}>
         {profileNFT.map((nft, idx) => {
