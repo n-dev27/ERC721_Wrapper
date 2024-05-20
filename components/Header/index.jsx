@@ -35,7 +35,7 @@ const Header = () => {
   const [loading2, setLoading2] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1);
   const [sticky, setSticky] = useState(false);
-  const [rewardValue, setRewardValue] = useState(false);
+  const [rewardValue, setRewardValue] = useState(0);
 
   const { address } = useAccount();
   const router = useRouter();
