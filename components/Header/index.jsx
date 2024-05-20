@@ -390,7 +390,7 @@ const Header = () => {
                     ) : (
                       `Claim reward: ${countLeadingZerosAfterDecimal(
                         rewardValue
-                      )}`
+                      )} ETH`
                     )}
                   </button>
                 ) : (
