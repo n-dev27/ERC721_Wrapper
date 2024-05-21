@@ -1,7 +1,7 @@
 const menuData = [
   {
     id: 1,
-    title: "Marketplace",
+    title: "BOHEDZ NFTs",
     path: "/",
     newTab: false,
   },
