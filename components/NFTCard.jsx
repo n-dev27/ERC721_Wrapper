@@ -92,7 +92,7 @@ const NFTCard = ({ nft, isProfile }) => {
         }}
       >
         {!isProfile && (
-          <div className="absolute right-2">
+          <div className="absolute right-6 top-6">
             <Checkbox
               readOnly
               checked={isSelect}

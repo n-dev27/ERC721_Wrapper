@@ -245,7 +245,7 @@ const Header = () => {
             : "absolute"
         }`}
       >
-        <div className="w-full px-12">
+        <div className="w-full px-4 sm:px-12">
           <div className="relative -mx-4 flex items-center justify-between">
             <div className="w-24 max-w-full xl:mr-12">
               <Link
@@ -380,7 +380,7 @@ const Header = () => {
                 )}
                 {address ? (
                   <button
-                    className="min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
+                    className="flex justify-center min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
                     onClick={() => handleClaim()}
                   >
                     {loading2 ? (
@@ -388,9 +388,12 @@ const Header = () => {
                         <PuffLoader color="#ffff" size={20} />
                       </div>
                     ) : (
-                      `Claim reward: ${countLeadingZerosAfterDecimal(
-                        rewardValue
-                      )} ETH`
+                      <div className="flex gap-1">
+                        <span className="hidden ssm:flex">Claim reward: </span>
+                        <span>
+                          {countLeadingZerosAfterDecimal(rewardValue)} ETH
+                        </span>
+                      </div>
                     )}
                   </button>
                 ) : (
