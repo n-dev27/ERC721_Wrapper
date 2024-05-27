@@ -2,8 +2,7 @@
 
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { HashLoader } from "react-spinners";
+import { HashLoader, GridLoader } from "react-spinners";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { initialFetch } from "../utils/FetchNFT";
@@ -22,9 +21,9 @@ const Home = () => {
     setAllNFT,
   } = useContext(NFTContext);
 
-  const [hasMore, setHasMore] = useState(true);
   const [fromIndex, setFromIndex] = useState(1);
   const [toIndex, setToIndex] = useState(100);
+  const [subIsLoading, setSubIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,57 +45,76 @@ const Home = () => {
         );
         setAllNFT(resultingArray);
         setIsLoading(false);
-        setFromIndex(101);
-        setToIndex(200);
+        const object = {fromIndex: 101, toIndex: 200}
+        localStorage.setItem('indexObject', JSON.stringify(object))
+        setFromIndex(fromIndex + 100);
+        setToIndex(toIndex + 100);
       } catch (err) {
         console.error(err);
         setIsLoading(false);
       }
     };
     fetchData();
-    // fetchMoreData()
   }, []);
 
   const fetchMoreData = () => {
-    console.log('fetchData === ', fromIndex)
+    const prevFromIndex = JSON.parse(localStorage.getItem('indexObject')).fromIndex;
+    const prevToIndex = JSON.parse(localStorage.getItem('indexObject')).toIndex;
+    setSubIsLoading(true);
     const params = {
-      fromIndex: fromIndex,
-      toIndex: toIndex
+      fromIndex: prevFromIndex,
+      toIndex: prevToIndex
     }
     const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
     axios.get(base, {
       params: params
     }).then(res => {
-      console.log('res === ', res)
       setAllNFT((prevNFT) => [...prevNFT, ...res.data.data]);
-      res.data.data.length > 0 ? setHasMore(true) : setHasMore(false)
+      setSubIsLoading(false);
+      const newObject = {
+        fromIndex: prevFromIndex + 100,
+        toIndex: prevToIndex + 100
+      }
+      localStorage.setItem('indexObject', JSON.stringify(newObject))
     }).catch(err => console.log('fetch Error'))
-
-    setFromIndex(fromIndex + 100);
-    setToIndex(toIndex + 100);
   }
+
+  const handleScroll = (event) => {
+    // Determine if the user has scrolled to the bottom of the element
+    const isPageBottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
+
+    if (isPageBottom) {
+      // Handle reaching the bottom
+      fetchMoreData();
+    }
+  }
+
+  useEffect(() => {
+    const container = document.getElementById('infinite-scroll');
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+
+      // Remove event listener on cleanup
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [isLoading])
 
   return isLoading ? (
     <div className={`${styles.flexCol} justify-center h-full`}>
       <HashLoader color="#f4fffd" size={100} loading />
     </div>
-  ) : allNFT && allNFT.length > 0 ? (
-      <InfiniteScroll
-        dataLength={allNFT.length}
-        next={fetchMoreData}
-        hasMore={true}
-        loader={
-          <div className={`abosulte flex items-center justify-center`}>
-            <HashLoader color="black" size={40} loading />
-          </div>
-        }
-      >
-        <div className={`${styles.gridContainerNFT}`}>
+  ) :
+    allNFT && allNFT.length > 0 ? (
+        <div id="infinite-scroll" className={`${styles.gridContainerNFT} ${styles.example} w-full overflow-y-auto`}>
           {allNFT.map((nft, idx) => {
             return <NFTCard key={idx} nft={nft} isProfile={false}></NFTCard>;
           })}
+          {subIsLoading && (
+            <div className="fixed inset-0 flex w-screen items-center bg-[#000000e6] justify-center p-4 backdrop-blur-[2px]">
+              <GridLoader color="#36d7b7" />
+            </div>
+          )}
         </div>
-      </InfiniteScroll>
   ) : (
     <div className="w-full">
       <h2 className="text-white text-5xl w-full flex justify-center">

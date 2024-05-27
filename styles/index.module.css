@@ -124,7 +124,7 @@
   justify-content: center;
   grid-auto-flow: row dense;
   row-gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 130px;
   padding: 0 40px 0 40px;
   width: 100%;
   column-gap: 0.5rem;
@@ -137,6 +137,18 @@
 }
 
 @media (min-width: 1024px) {
+  .gridContainerNFT {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .gridContainerNFT {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1701px) {
   .gridContainerNFT {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
