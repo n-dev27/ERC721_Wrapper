@@ -69,7 +69,7 @@ const Header = () => {
             abi: escrowABI,
             functionName: "checkClaimableRewards",
             args: [address],
-            chainId: 84532,
+            chainId: 42161,
           });
           setRewardValue(Number(rewardResult) / 10 ** 18);
         } catch (err) {
@@ -177,7 +177,7 @@ const Header = () => {
         abi: escrowABI,
         functionName: "checkClaimableRewards",
         args: [address],
-        chainId: 84532,
+        chainId: 42161,
       });
 
       setRewardValue(Number(rewardResult));
@@ -216,7 +216,7 @@ const Header = () => {
     try {
       setIsLoading(true);
       toast("Multiwrap is done successfully");
-      const result = await initialFetch();
+      const result = await initialFetch(1, 100);
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,
         abi: nftABI,

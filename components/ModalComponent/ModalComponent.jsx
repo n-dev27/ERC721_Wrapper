@@ -59,7 +59,7 @@ export default function WrapModal({
           abi: tokenABI,
           functionName: "balanceOf",
           args: [address],
-          chainId: 84532,
+          chainId: 42161,
         });
 
         const nftBalance = await readContract(config, {
@@ -67,7 +67,7 @@ export default function WrapModal({
           abi: nftABI,
           functionName: "balanceOf",
           args: [address],
-          chainId: 84532,
+          chainId: 42161,
         });
 
         setTokenBal(Number(tokenBalance) / 10 ** 18);
@@ -201,7 +201,7 @@ export default function WrapModal({
         setProfileNFT(resultingArray);
         setIsLoading(false);
       } else {
-        const result = await initialFetch();
+        const result = await initialFetch(1, 100);
         const getWrappedTokens = await readContract(config, {
           address: contractAddr,
           abi: nftABI,
@@ -224,7 +224,7 @@ export default function WrapModal({
   return (
     <>
       <Transition appear show={isModal} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-40" onClose={closeModal}>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
@@ -236,14 +236,14 @@ export default function WrapModal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className="fixed inset-0 flex w-screen items-center bg-[#000000e6] justify-center p-4">
-                  <Dialog.Panel className="w-full max-w-[32rem] transform overflow-hidden rounded-[20px] shadow bg-[#14253d] text-left align-middle transition-all">
+                <div className="fixed inset-0 flex w-screen items-center bg-[#000000e6] justify-center p-4 backdrop-blur-sm">
+                  <Dialog.Panel className="w-full max-w-[30rem] transform overflow-hidden rounded-[20px] shadow bg-[#14253d] text-left align-middle transition-all">
                     <div className="flex flex-col mx-auto p-4 rounded-[20px] bg-[#14253d] justify-between gap-4">
                       <img
                         src={image ? image : placeholderImage}
                         alt="cover image"
                         onError={onImageError}
-                        className="rounded-[20px]"
+                        className="rounded-[20px] "
                       ></img>
                       <div className="relative flex flex-col w-full gap-4">
                         {isProfile ? (

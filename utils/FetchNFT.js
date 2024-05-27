@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const api_key = process.env.NEXT_PUBLIC_ALCHEMY_TEST_NET;
 const requestOptions = {
   method: "GET",
@@ -44,12 +46,20 @@ export const fetchNFTsForCollection = async (collection) => {
   }
 };
 
-export const initialFetch = async () => {
-  const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
-  const response = await fetch(base);
-  const json = await response.json();
-
-  return json.data;
+export const initialFetch = async (from, to) => {
+  const params = {
+    fromIndex: from,
+    toIndex: to
+  }
+  const base = process.env.NEXT_PUBLIC_IPFS_URL_LOCAL + "api/token/test";
+  // const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
+  const response = await axios.get(base, {
+    params: params
+  });
+  console.log('response === ', response)
+  if (response.data.data) {
+    return response.data.data;
+  }
 };
 
 export const getOwnerNFTFetch = async (address) => {

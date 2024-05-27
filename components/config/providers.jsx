@@ -30,7 +30,7 @@ const config1 = getDefaultConfig({
   ],
   chains: [
     mainnet,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "false"
       ? [baseSepolia]
       : []),
   ],

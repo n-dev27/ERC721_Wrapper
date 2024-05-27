@@ -33,10 +33,12 @@ function MyApp({ Component, pageProps }) {
           setSelectList,
         }}
       >
-        <div className={`${styles.homeCSS} overflow-y-hidden`}>
+        <div className={`${styles.homeCSS}`}>
           <Header />
-          <Component {...pageProps} />
-          <ScrollToTop />
+          <div className="w-full h-[calc(100%-100px)] mt-24">
+            <Component {...pageProps}/>
+            <ScrollToTop />
+          </div>
         </div>
       </NFTContext.Provider>
     </Providers>

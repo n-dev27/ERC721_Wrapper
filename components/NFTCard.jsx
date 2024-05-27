@@ -19,7 +19,7 @@ const NFTCard = ({ nft, isProfile }) => {
 
   const image = isProfile
     ? nft.media[0].gateway
-    : `https://ipfs.io/ipfs/QmfEudVfYCLn1eWXYqpSxFohZJ7T5LeFUUEELrEBiGv4EQ/${nft.edition}.png`;
+    : `https://ipfs.io/ipfs/QmNiAUXNiTf6jSxBwmaSkUPHLHPTXCzaVP33LroACR74Bf/${nft.edition}.png`;
 
   const placeholderImage = "./no-image-icon.png";
 
@@ -92,7 +92,7 @@ const NFTCard = ({ nft, isProfile }) => {
         }}
       >
         {!isProfile && (
-          <div className="absolute right-6 top-6">
+          <div className="absolute right-4 top-4">
             <Checkbox
               readOnly
               checked={isSelect}

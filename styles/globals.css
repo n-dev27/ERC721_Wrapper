@@ -45,3 +45,9 @@
 .font_AAbel {
   font-family: Abel;
 }
+
+
+.infinite-scroll-component__outerdiv {
+  height: 100%;
+}
+
