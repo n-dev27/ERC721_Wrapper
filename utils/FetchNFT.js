@@ -51,7 +51,7 @@ export const initialFetch = async (from, to) => {
     fromIndex: from,
     toIndex: to
   }
-  const base = process.env.NEXT_PUBLIC_IPFS_URL_LOCAL + "api/token/test";
+  const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
   // const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
   const response = await axios.get(base, {
     params: params

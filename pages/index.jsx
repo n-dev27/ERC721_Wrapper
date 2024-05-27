@@ -63,7 +63,7 @@ const Home = () => {
       fromIndex: fromIndex,
       toIndex: toIndex
     }
-    const base = process.env.NEXT_PUBLIC_IPFS_URL_LOCAL + "api/token/test";
+    const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
     axios.get(base, {
       params: params
     }).then(res => {
