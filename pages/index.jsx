@@ -36,7 +36,7 @@ const Home = () => {
           address: contractAddr,
           abi: nftABI,
           functionName: "getWrappedTokenIds",
-          chainId: 42161,
+          chainId: 1,
         });
 
         const transformedIDS = getWrappedTokens.map((id) => Number(id));

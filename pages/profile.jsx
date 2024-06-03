@@ -26,6 +26,8 @@ const Profile = () => {
               process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS.toLowerCase()
           );
 
+          console.log('resulting on profile === ', resultingArray)
+
           setProfileNFT(resultingArray);
           setIsLoading(false);
         } catch (err) {

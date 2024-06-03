@@ -19,7 +19,7 @@ import { initialFetch } from "../../utils/FetchNFT";
 import menuData from "./menuData";
 import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
-import escrowABI from "../../contract/ABI/EscrowSharingNFTHolder.json";
+import escrowABI from "../../contract/ABI/EscrowABI.json";
 
 const Header = () => {
   const {
@@ -69,7 +69,7 @@ const Header = () => {
             abi: escrowABI,
             functionName: "checkClaimableRewards",
             args: [address],
-            chainId: 42161,
+            chainId: 1,
           });
           setRewardValue(Number(rewardResult) / 10 ** 18);
         } catch (err) {
@@ -177,7 +177,7 @@ const Header = () => {
         abi: escrowABI,
         functionName: "checkClaimableRewards",
         args: [address],
-        chainId: 42161,
+        chainId: 1,
       });
 
       setRewardValue(Number(rewardResult));

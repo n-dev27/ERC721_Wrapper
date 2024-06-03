@@ -59,7 +59,7 @@ export default function WrapModal({
           abi: tokenABI,
           functionName: "balanceOf",
           args: [address],
-          chainId: 42161,
+          chainId: 1,
         });
 
         const nftBalance = await readContract(config, {
@@ -67,7 +67,7 @@ export default function WrapModal({
           abi: nftABI,
           functionName: "balanceOf",
           args: [address],
-          chainId: 42161,
+          chainId: 1,
         });
 
         setTokenBal(Number(tokenBalance) / 10 ** 18);

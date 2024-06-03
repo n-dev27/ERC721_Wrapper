@@ -52,7 +52,7 @@ export const initialFetch = async (from, to) => {
     toIndex: to
   }
   const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
-  // const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
+  // const base = process.env.NEXT_PUBLIC_IPFS_URL_LOCAL + "api/token/test";
   const response = await axios.get(base, {
     params: params
   });
@@ -64,12 +64,13 @@ export const initialFetch = async (from, to) => {
 
 export const getOwnerNFTFetch = async (address) => {
   // Collection Bored Ape
-  const baseURL = `https://base-sepolia.g.alchemy.com/v2/${api_key}/getNFTs/`;
+  const baseURL = `https://arb-mainnet.g.alchemy.com/v2/${api_key}/getNFTs/`;
   const fetchURL = `${baseURL}?owner=${address}`;
   const nfts = await fetch(fetchURL, requestOptions).then((data) =>
     data.json()
   );
   if (nfts) {
+    console.log('nfts on profile === ', nfts)
     return nfts.ownedNfts;
   }
 };
