@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -36,6 +38,7 @@ const Header = () => {
   const [openIndex, setOpenIndex] = useState(-1);
   const [sticky, setSticky] = useState(false);
   const [rewardValue, setRewardValue] = useState(0);
+  const [isClaimModalFlag, setIsClaimModalFlag] = useState(false);
 
   const { address } = useAccount();
   const router = useRouter();
@@ -237,6 +240,50 @@ const Header = () => {
 
   return (
     <>
+      <Transition appear show={isClaimModalFlag} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={() => setIsClaimModalFlag(false)}>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-[20px]" aria-hidden="true" />
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-[38rem] transform overflow-hidden rounded-2xl shadow bg-[#14253d] text-left align-middle transition-all border border-[rgba(255,255,255,0.1)]">
+                  <div className="flex items-center justify-between p-4 md:p-5">
+                    <h3 className="text-lg text-[rgba(255,255,255,0.8)] font-[Inter] font-semibold">
+                      Are you sure you want to claim the rewards?
+                    </h3>
+                    <button type="button" className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="course-modal"
+                      onClick={() => setIsClaimModalFlag(false)}
+                    >
+                      <XMarkIcon className='w-6 h-6' />
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                  </div>
+
+                  <div className='flex gap-6 px-4 pb-4 md:px-5 md:pb-5'>
+                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                      onClick={() => setIsClaimModalFlag(false)}
+                    >No, cancel</button>
+                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                      onClick={() => {
+                        handleClaim();
+                        setIsClaimModalFlag(false);
+                      }}
+                    >Yes, I'm sure</button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
       <header
         className={`header top-0 left-0 z-40 flex w-full items-center bg-[#0d192b] !bg-opacity-90 ${
           sticky
@@ -380,7 +427,7 @@ const Header = () => {
                 {address ? (
                   <button
                     className="flex justify-center min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-[Inter] font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
-                    onClick={() => handleClaim()}
+                    onClick={() => setIsClaimModalFlag(true)}
                   >
                     {loading2 ? (
                       <div className="w-full h-full flex justify-center items-center">

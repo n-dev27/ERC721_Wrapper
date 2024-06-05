@@ -556,12 +556,12 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_feeRecipient",
+				"name": "_wrapperContract",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "_wrapperContract",
+				"name": "_escrowContract",
 				"type": "address"
 			}
 		],
