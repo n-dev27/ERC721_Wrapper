@@ -43,9 +43,9 @@ const Profile = () => {
     </div>
   ) : profileNFT && profileNFT.length > 0 ? (
     <div
-      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-100px)] mt-24`}
+      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-40px)]`}
     >
-      <div className={`${styles.gridContainerNFT} ${styles.example}`}>
+      <div className={`${styles.gridContainerNFT} ${styles.example} w-full`}>
         {profileNFT.map((nft, idx) => {
           return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
         })}
