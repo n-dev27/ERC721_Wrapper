@@ -135,7 +135,6 @@ const NFTCard = ({ nft, isProfile }) => {
                 <BiCopy size={"1rem"} className={styles.text_gray} />
               )}
             </button>
-            {copied ? <span>Copied</span> : ""}
           </div>
         </div>
 
