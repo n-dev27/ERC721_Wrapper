@@ -31,7 +31,6 @@ const Home = () => {
         setIsLoading(true);
         let nfts;
         nfts = await initialFetch(fromIndex, toIndex);
-        console.log("nfts === ", nfts);
         const getWrappedTokens = await readContract(config, {
           address: contractAddr,
           abi: nftABI,
@@ -117,7 +116,7 @@ const Home = () => {
         </div>
   ) : (
     <div className="w-full">
-      <h2 className="text-white text-5xl w-full flex justify-center">
+      <h2 className="text-white text-5xl font-[Inter] w-full flex justify-center">
         There is no NFT to mint!
       </h2>
     </div>

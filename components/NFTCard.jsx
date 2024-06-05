@@ -116,10 +116,10 @@ const NFTCard = ({ nft, isProfile }) => {
         className={`${styles.flexCol} ${styles.nft_textContainer} opacity-80`}
       >
         <div>
-          <h3 className="text-[#8bacda]">{isProfile ? nft.title : nft.name}</h3>
-          <p>Id: {isProfile ? nft.metadata.edition : nft.edition}</p>
+          <h3 className="text-[#8bacda] font-[Inter]">{isProfile ? nft.title : nft.name}</h3>
+          <p className=" font-[Inter]">Id: {isProfile ? nft.metadata.edition : nft.edition}</p>
           <div>
-            <p className="text-[16px]">{`Collection: ${nftContract_Addr.substr(
+            <p className="text-[14px] font-[Inter]">{`Collection: ${nftContract_Addr.substr(
               0,
               4
             )}...${nftContract_Addr.substr(nftContract_Addr.length - 4)}`}</p>
@@ -139,7 +139,7 @@ const NFTCard = ({ nft, isProfile }) => {
           </div>
         </div>
 
-        <div className={styles.nft_textDescription}>
+        <div className={`${styles.nft_textDescription} font-[Inter] text-sm`}>
           <p>{nft.description}</p>
         </div>
       </div>
@@ -147,7 +147,7 @@ const NFTCard = ({ nft, isProfile }) => {
         <button
           className={`${
             isConnected ? "" : "cursor-not-allowed"
-          } flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
+          } flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor font-[Inter] hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
           onClick={() => handleClick()}
           disabled={!isConnected}
         >

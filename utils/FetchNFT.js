@@ -8,7 +8,6 @@ const requestOptions = {
 
 export const fetchNFTs = async (wallet, collection = "") => {
   let nfts;
-  console.log("fetching nfts");
   const baseURL = `https://eth-mainnet.g.alchemy.com/v2/${api_key}/getNFTs/`;
 
   if (!collection.length) {
@@ -16,7 +15,6 @@ export const fetchNFTs = async (wallet, collection = "") => {
 
     nfts = await fetch(fetchURL, requestOptions).then((data) => data.json());
   } else {
-    console.log("fetching nfts for collection owned by address");
     /**
      * The "5B%5D" string right after the "contractAddresses" parameters specifies
      * that the "contractAddresses" parameter is an array and not a simple string.
@@ -27,7 +25,6 @@ export const fetchNFTs = async (wallet, collection = "") => {
   }
 
   if (nfts) {
-    console.log("nfts:", nfts);
     return nfts.ownedNfts;
   }
 };
@@ -40,7 +37,6 @@ export const fetchNFTsForCollection = async (collection) => {
       data.json()
     );
     if (nfts) {
-      console.log("NFTs in collection:", nfts);
       return nfts.nfts;
     }
   }
@@ -56,7 +52,6 @@ export const initialFetch = async (from, to) => {
   const response = await axios.get(base, {
     params: params
   });
-  console.log('response === ', response)
   if (response.data.data) {
     return response.data.data;
   }
@@ -70,7 +65,6 @@ export const getOwnerNFTFetch = async (address) => {
     data.json()
   );
   if (nfts) {
-    console.log('nfts on profile === ', nfts)
     return nfts.ownedNfts;
   }
 };

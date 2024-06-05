@@ -10,20 +10,20 @@ import { useAccount } from "wagmi";
 const style = {
   sellInput:
     "flex w-full max-h-[90px] justify-between bg-[#1E2431] sm:bg-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_0_rgba(0,0,0,0.15)] rounded-[20px] px-4 py-2",
-  sellInputText: "w-full text-sm text-white font-bold font-[Inter]",
+  sellInputText: "w-full text-sm text-white font-[Inter] font-bold font-[Inter]",
   sellInputBalanceContainer: "flex flex-col",
   sellInputBalance:
     "flex w-full justify-end items-center text-[14px] font-[Inter] text-[#94A3B8]",
   sellInputSelector:
     "flex items-center p-2 w-full h-[40px] bg-[#2C354A] justify-start rounded-[8px] border border-[#334155] gap-2 shadow-[0_4_12_0_rgba(0,0,0,0.5)]",
   sellInputMaxButton:
-    "flex justify-center text-blue-400 text-sm font-bold font_Inter items-center hover:animate-pulse rounded-md pt-[1px]",
+    "flex justify-center text-blue-400 text-sm font-[Inter] font-bold font_Inter items-center hover:animate-pulse rounded-md pt-[1px]",
   sellInputInputContainer:
-    "flex justify-end items-center text-white text-[2rem]",
+    "flex justify-end items-center text-white text-[2rem] font-[Inter]",
   sellInputAmount:
-    "defaultPlaceholder flex w-full justify-end text-[#F8FAFC] bg-transparent text-[32px] border-none outline-none focus:outline-none focus:ring-transparent text-end p-0",
+    "defaultPlaceholder flex w-full justify-end text-[#F8FAFC] bg-transparent text-[32px] font-[Inter] border-none outline-none focus:outline-none focus:ring-transparent text-end p-0",
   sellInputValue:
-    "flex w-full justify-end text-[16px] font-[Inter] text-[#94A3B8]",
+    "flex w-full justify-end text-[16px] font-[Inter] text-[#94A3B8] font-[Inter]",
 };
 
 const SellTokenInput = (props) => {
@@ -53,7 +53,7 @@ const SellTokenInput = (props) => {
         <div className="flex items-center">
           <div type="button" className={style.sellInputSelector}>
             <div className="flex gap-1 items-center h-full">
-              <p className="text-[20px] text-white font_Roboto">BOHEDZ</p>
+              <p className="text-[20px] text-white font-[Inter]">BOHEDZ</p>
             </div>
           </div>
         </div>

@@ -26,8 +26,6 @@ const Profile = () => {
               process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS.toLowerCase()
           );
 
-          console.log('resulting on profile === ', resultingArray)
-
           setProfileNFT(resultingArray);
           setIsLoading(false);
         } catch (err) {
@@ -55,7 +53,7 @@ const Profile = () => {
     </div>
   ) : (
     <div className="">
-      <h2 className="text-white text-5xl w-full flex justify-center">
+      <h2 className="text-white text-5xl font-[Inter] w-full flex justify-center">
         You did not mint any NFT yet!
       </h2>
     </div>

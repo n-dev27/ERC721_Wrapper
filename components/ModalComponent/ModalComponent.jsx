@@ -283,7 +283,7 @@ export default function WrapModal({
                           loading || (isProfile ? nftBal < 1 : tokenBal < 1)
                             ? "cursor-not-allowed"
                             : ""
-                        } flex w-full bg-[#1C76FF] rounded-[20px] h-16 justify-center items-center text-white text-2xl cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
+                        } flex w-full bg-[#1C76FF] rounded-[20px] h-16 justify-center items-center text-white text-2xl font-[Inter] cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
                         onClick={() => {
                           if (
                             !loading &&
