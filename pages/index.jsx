@@ -6,12 +6,7 @@ import { HashLoader, GridLoader } from "react-spinners";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { initialFetch } from "../utils/FetchNFT";
-import { config } from "../components/config/config";
-import { readContract } from "@wagmi/core";
-import nftABI from "../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../utils/context";
-
-const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
 const Home = () => {
   const {
@@ -21,8 +16,8 @@ const Home = () => {
     setAllNFT,
   } = useContext(NFTContext);
 
-  const [fromIndex, setFromIndex] = useState(1);
-  const [toIndex, setToIndex] = useState(100);
+  const [fromIndex, setFromIndex] = useState(0);
+  const [toIndex, setToIndex] = useState(99);
   const [subIsLoading, setSubIsLoading] = useState(false);
 
   useEffect(() => {
@@ -31,20 +26,11 @@ const Home = () => {
         setIsLoading(true);
         let nfts;
         nfts = await initialFetch(fromIndex, toIndex);
-        const getWrappedTokens = await readContract(config, {
-          address: contractAddr,
-          abi: nftABI,
-          functionName: "getWrappedTokenIds",
-          chainId: 1,
-        });
+        console.log('nfts === ', nfts)
 
-        const transformedIDS = getWrappedTokens.map((id) => Number(id));
-        const resultingArray = nfts.filter(
-          (value) => !transformedIDS.includes(value.edition)
-        );
-        setAllNFT(resultingArray);
+        setAllNFT(nfts);
         setIsLoading(false);
-        const object = {fromIndex: 101, toIndex: 200}
+        const object = {fromIndex: 100, toIndex: 199}
         localStorage.setItem('indexObject', JSON.stringify(object))
         setFromIndex(fromIndex + 100);
         setToIndex(toIndex + 100);
