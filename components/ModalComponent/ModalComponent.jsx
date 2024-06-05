@@ -35,17 +35,12 @@ export default function WrapModal({
   } = useContext(NFTContext);
 
   const [loading, setLoading] = useState(false);
-  const [isApprove, setIsApprove] = useState(true);
 
   const placeholderImage = "./no-image-icon.png";
   const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
-  const toast_string = isProfile
-    ? isApprove
-      ? "Approve is done successfully"
-      : "Unwrap is done successfully"
-    : "Wrap is done successfully";
+  const toast_string = isProfile ? "Unwrap is done successfully" : "Wrap is done successfully";
 
   const { address } = useAccount();
 
@@ -87,60 +82,14 @@ export default function WrapModal({
   };
 
   const clickWrap = async () => {
-    setIsApprove(true);
-    if (!isApprove || !isProfile) {
-      const result = await executeContract(isProfile);
-      return;
-    }
-
-    if (address) {
-      setLoading(true);
-      try {
-        const result = await writeContract(config, {
-          address: contractAddr,
-          abi: nftABI,
-          functionName: "approve",
-          args: [contractAddr, nftData.metadata.edition],
-        });
-
-        if (!result) {
-          setLoading(false);
-          console.error(`Failed to execute ${"wrap"} function on contract`);
-          throw new Error("Transaction Failed");
-        }
-
-        const transaction = await waitForTransactionReceipt(config, {
-          hash: result,
-        });
-
-        if (!transaction) {
-          console.error("Receipt failed");
-          setLoading(false);
-          throw new Error("Receipt Failed");
-        }
-        toast(toast_string);
-        setIsApprove(false);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        if (error.code === 4001) {
-          console.log("Transaction was not approved by user.");
-        } else {
-          console.error(error);
-        }
-      }
-    }
-  };
-
-  const executeContract = async (isProfile) => {
     setLoading(true);
     try {
-      const contractFunction = isProfile ? "unwrap" : "wrap";
+      const contractFunction = isProfile ? "batchUnwrap" : "batchWrap";
       const result = await writeContract(config, {
         address: tokenAddr,
         abi: tokenABI,
         functionName: contractFunction,
-        args: [isProfile ? nftData.metadata.edition : nftData.edition],
+        args: [[isProfile ? nftData.metadata.edition : nftData.edition]],
       });
 
       if (!result) {
@@ -185,6 +134,50 @@ export default function WrapModal({
         console.error(error);
       }
     }
+
+    // setIsApprove(true);
+    // if (!isApprove || !isProfile) {
+    //   const result = await executeContract(isProfile);
+    //   return;
+    // }
+
+    // if (address) {
+    //   setLoading(true);
+    //   try {
+    //     const result = await writeContract(config, {
+    //       address: contractAddr,
+    //       abi: nftABI,
+    //       functionName: "approve",
+    //       args: [contractAddr, nftData.metadata.edition],
+    //     });
+
+    //     if (!result) {
+    //       setLoading(false);
+    //       console.error(`Failed to execute ${"wrap"} function on contract`);
+    //       throw new Error("Transaction Failed");
+    //     }
+
+    //     const transaction = await waitForTransactionReceipt(config, {
+    //       hash: result,
+    //     });
+
+    //     if (!transaction) {
+    //       console.error("Receipt failed");
+    //       setLoading(false);
+    //       throw new Error("Receipt Failed");
+    //     }
+    //     toast(toast_string);
+    //     setIsApprove(false);
+    //     setLoading(false);
+    //   } catch (error) {
+    //     setLoading(false);
+    //     if (error.code === 4001) {
+    //       console.log("Transaction was not approved by user.");
+    //     } else {
+    //       console.error(error);
+    //     }
+    //   }
+    // }
   };
 
   const reFetchNFT = async (isProfile) => {
@@ -256,6 +249,7 @@ export default function WrapModal({
                             </div>
                             <div>
                               <SellTokenInput
+                                isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
                               />
@@ -265,6 +259,7 @@ export default function WrapModal({
                           <>
                             <div>
                               <SellTokenInput
+                                isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
                               />
@@ -302,9 +297,7 @@ export default function WrapModal({
                             />
                           </div>
                         ) : isProfile ? (
-                          isApprove ? (
-                            "Approve"
-                          ) : (
+                          (
                             "UnWrap"
                           )
                         ) : (

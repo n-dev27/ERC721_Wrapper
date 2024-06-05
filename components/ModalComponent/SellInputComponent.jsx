@@ -96,7 +96,7 @@ const SellTokenInput = (props) => {
             pattern="^[0-9]*[.,]?[0-9]*$"
             minLength="1"
             maxLength="79"
-            value={1}
+            value={props.isProfile ? 4.75 : 5.1}
             readOnly
             // onChange={(event) => {
             //   props.setInputTokenAmount(event.target.value);

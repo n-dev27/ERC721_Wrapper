@@ -96,6 +96,7 @@ const Header = () => {
   const handleMultiWrap = async () => {
     setLoading(true);
     const tokenIDs = selectList.map((data) => data.edition);
+    console.log('tokenIDs == ', tokenIDs)
     try {
       const result = await writeContract(config, {
         address: tokenAddr,
