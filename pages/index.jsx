@@ -24,7 +24,6 @@ const Home = () => {
     try {
       setIsLoading(true);
       const nfts = await initialFetch(indices.fromIndex, indices.toIndex);
-      console.log('nfts === ', nfts)
 
       if (nfts.data.isEndOfArray) {
         setHasMore(true);
@@ -56,7 +55,6 @@ const Home = () => {
     axios.get(base, {
       params: params
     }).then(res => {
-      console.log('res === ', res.data)
 
       if (res.data.isEndOfArray) {
         setHasMore(true);
