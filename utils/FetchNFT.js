@@ -53,7 +53,7 @@ export const initialFetch = async (from, to) => {
     params: params
   });
   if (response.data.data) {
-    return response.data.data;
+    return response;
   }
 };
 

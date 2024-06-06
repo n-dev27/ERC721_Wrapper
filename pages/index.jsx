@@ -19,6 +19,7 @@ const Home = () => {
   const [fromIndex, setFromIndex] = useState(0);
   const [toIndex, setToIndex] = useState(99);
   const [subIsLoading, setSubIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,9 +27,14 @@ const Home = () => {
         setIsLoading(true);
         let nfts;
         nfts = await initialFetch(fromIndex, toIndex);
-        console.log('nfts === ', nfts)
+        
+        if (nfts.data.isEndOfArray === true) {
+          setHasMore(true);
+        } else {
+          setHasMore(false);
+        }
 
-        setAllNFT(nfts);
+        setAllNFT(nfts.data.data);
         setIsLoading(false);
         const object = {fromIndex: 100, toIndex: 199}
         localStorage.setItem('indexObject', JSON.stringify(object))
@@ -51,9 +57,17 @@ const Home = () => {
       toIndex: prevToIndex
     }
     const base = process.env.NEXT_PUBLIC_IPFS_URL + "api/token/test";
+    // const base = process.env.NEXT_PUBLIC_IPFS_URL_LOCAL + "api/token/test";
     axios.get(base, {
       params: params
     }).then(res => {
+
+      if (res.data.isEndOfArray === true) {
+        setHasMore(true);
+      } else {
+        setHasMore(false);
+      }
+
       setAllNFT((prevNFT) => [...prevNFT, ...res.data.data]);
       setSubIsLoading(false);
       const newObject = {
@@ -61,14 +75,14 @@ const Home = () => {
         toIndex: prevToIndex + 100
       }
       localStorage.setItem('indexObject', JSON.stringify(newObject))
-    }).catch(err => console.log('fetch Error'))
+    }).catch(err => console.log('fetch Error === ', err))
   }
 
   const handleScroll = (event) => {
     // Determine if the user has scrolled to the bottom of the element
     const isPageBottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
 
-    if (isPageBottom) {
+    if (isPageBottom && !hasMore) {
       // Handle reaching the bottom
       fetchMoreData();
     }
@@ -82,7 +96,7 @@ const Home = () => {
       // Remove event listener on cleanup
       return () => container.removeEventListener('scroll', handleScroll);
     }
-  }, [isLoading])
+  }, [hasMore, isLoading])
 
   return isLoading ? (
     <div className={`${styles.flexCol} justify-center h-full`}>
