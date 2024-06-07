@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import React, { useState } from "react";
+import { List } from 'immutable';
 import { Providers } from "../components/config/providers";
 import Header from "../components/Header";
 import ScrollToTop from "../components/ScrollToTop";
@@ -33,8 +34,9 @@ function MyApp({ Component, pageProps }) {
           setSelectList,
         }}
       >
-        <div className={`${styles.homeCSS} overflow-hidden`}>
-          <Header />
+        <div className="flex items-center justify-center h-screen">
+            <div className={`fixed w-full top-0 ${styles.homeCSS} -z-10`} />
+            <Header />
             <Component {...pageProps}/>
             <ScrollToTop />
         </div>

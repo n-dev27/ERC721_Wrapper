@@ -218,7 +218,7 @@ const Header = () => {
     try {
       setIsLoading(true);
       toast("Multiwrap is done successfully");
-      const result = await initialFetch(1, 100);
+      const result = await initialFetch(0, 99);
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,
         abi: nftABI,

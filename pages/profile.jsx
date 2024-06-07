@@ -2,7 +2,7 @@
 
 import React, { useEffect, useContext } from "react";
 import { useAccount } from "wagmi";
-import { HashLoader } from "react-spinners";
+import { GridLoader } from "react-spinners";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { getOwnerNFTFetch } from "../utils/FetchNFT";
@@ -38,8 +38,8 @@ const Profile = () => {
   }, [address]);
 
   return isLoading ? (
-    <div className={`${styles.flexCol} justify-center h-screen`}>
-      <HashLoader color="#f4fffd" size={100} loading />
+    <div className="fixed inset-0 flex items-center justify-center backdrop-blur-[2px] bg-black bg-opacity-60">
+      <GridLoader color="#36d7b7" />
     </div>
   ) : profileNFT && profileNFT.length > 0 ? (
     <div
