@@ -321,7 +321,7 @@ const Header = () => {
   const reFetchNFT = async () => {
     try {
       isProfile ? setUnLoading(true) : setIsLoading(true);
-      toast("MultiUnwrap is done successfully");
+      toast(isProfile? "MultiUnwrap is done successfully" : "MultiWrap is done successfully");
       const result = await initialFetch(0, 99);
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,
