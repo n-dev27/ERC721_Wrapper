@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import React, { useState } from "react";
-import { List } from 'immutable';
+import Head from "next/head";
 import { Providers } from "../components/config/providers";
 import Header from "../components/Header";
 import ScrollToTop from "../components/ScrollToTop";
@@ -10,16 +10,20 @@ import styles from "../styles/index.module.css";
 
 function MyApp({ Component, pageProps }) {
   const [selectList, setSelectList] = useState([]);
+  const [unSelectList, setUnSelectList] = useState([]);
   const [allNFT, setAllNFT] = useState([]);
   const [profileNFT, setProfileNFT] = useState([]);
   const [tokenBal, setTokenBal] = useState("");
   const [nftBal, setNFTBal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [avaTime, setAvaTime] = useState(false);
 
   return (
     <Providers>
       <NFTContext.Provider
         value={{
+          avaTime,
+          setAvaTime,
           isLoading,
           setIsLoading,
           tokenBal,
@@ -32,14 +36,20 @@ function MyApp({ Component, pageProps }) {
           setProfileNFT,
           selectList,
           setSelectList,
+          unSelectList,
+          setUnSelectList
         }}
       >
         <div className="flex items-center justify-center h-screen">
-            <div className={`fixed w-full top-0 ${styles.homeCSS} -z-10`} />
+          <Head>
+            <title>Bohedz</title>
+            <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"></link>
+          </Head>
+          <div className={`fixed w-full top-0 ${styles.homeCSS} -z-10`} />
             <Header />
             <Component {...pageProps}/>
             <ScrollToTop />
-        </div>
+          </div>
       </NFTContext.Provider>
     </Providers>
   );

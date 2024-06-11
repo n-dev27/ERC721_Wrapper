@@ -25,15 +25,20 @@ import escrowABI from "../../contract/ABI/EscrowABI.json";
 
 const Header = () => {
   const {
+    avaTime,
+    setAvaTime,
     setIsLoading,
     setAllNFT,
     selectList,
     setSelectList,
+    unSelectList,
+    setUnSelectList,
     setTokenBal,
     setNFTBal,
   } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [unLoading, setUnLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1);
   const [sticky, setSticky] = useState(false);
@@ -60,6 +65,50 @@ const Header = () => {
       setSticky(false);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const availableTime = await readContract(config, {
+          address: escrowAddr,
+          abi: escrowABI,
+          functionName: "contractDeploymentTimestamp",
+          chainId: 1,
+        });
+
+        const unlockDate = (Number(availableTime) * 1000 + 7 * 24 * 60 * 60 * 1000);      
+        
+        // Start the countdown timer
+        const interval = setInterval(() => {
+          const timeNow = new Date().getTime();
+          const distance = unlockDate - timeNow;
+
+          // Time calculations for days, hours, minutes and seconds
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+          if (distance <= 0) {
+            clearInterval(interval);
+            console.log('Contract deployment date reached!');
+            setAvaTime(true)
+          } else {
+            setAvaTime({
+              days: days,
+              hours: hours,
+              minutes: minutes,
+              seconds: seconds
+            })
+          }
+        }, 1000);
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
@@ -148,6 +197,61 @@ const Header = () => {
     }
   };
 
+  const handleMultiUnWrap = async () => {
+    setUnLoading(true);
+    const tokenIDs = unSelectList.map((data) => data.metadata.edition);
+    try {
+      const result = await writeContract(config, {
+        address: tokenAddr,
+        abi: tokenABI,
+        functionName: "batchUnwrap",
+        args: [tokenIDs],
+      });
+
+      if (!result) {
+        setUnLoading(false);
+        console.error(`Failed to execute ${"wrap"} function on contract`);
+        throw new Error("Transaction Failed");
+      }
+
+      const transaction = await waitForTransactionReceipt(config, {
+        hash: result,
+      });
+
+      if (!transaction) {
+        console.error("Receipt failed");
+        setUnLoading(false);
+        throw new Error("Receipt Failed");
+      }
+      const tokenBalance = await readContract(config, {
+        address: tokenAddr,
+        abi: tokenABI,
+        functionName: "balanceOf",
+        args: [address],
+      });
+
+      const nftBalance = await readContract(config, {
+        address: contractAddr,
+        abi: nftABI,
+        functionName: "balanceOf",
+        args: [address],
+      });
+
+      setTokenBal(Number(tokenBalance) / 10 ** 18);
+      setNFTBal(Number(nftBalance));
+      setUnLoading(false);
+      setUnSelectList([]);
+      await reFetchNFT();
+    } catch (error) {
+      setUnLoading(false);
+      if (error.code === 4001) {
+        console.log("Transaction was not approved by user.");
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
   const handleClaim = async () => {
     setLoading2(true);
     try {
@@ -216,8 +320,8 @@ const Header = () => {
 
   const reFetchNFT = async () => {
     try {
-      setIsLoading(true);
-      toast("Multiwrap is done successfully");
+      isProfile ? setUnLoading(true) : setIsLoading(true);
+      toast("MultiUnwrap is done successfully");
       const result = await initialFetch(0, 99);
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,
@@ -226,15 +330,15 @@ const Header = () => {
       });
 
       const transformedIDS = getWrappedTokens.map((id) => Number(id));
-
+      console.log('transformedIDS on reFetch === ', transformedIDS)
       const resultingArray = result.filter(
         (value) => !transformedIDS.includes(value.edition)
       );
       setAllNFT(resultingArray);
-      setIsLoading(false);
+      isProfile ? setUnLoading(false) : setIsLoading(false);
     } catch (err) {
       console.log("err === ", err);
-      setIsLoading(false);
+      isProfile ? setUnLoading(false) : setIsLoading(false);
     }
   };
 
@@ -407,6 +511,21 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
+              <div className="absolute left-[40%] 2xl:left-[35%] text-[rgba(255,255,255,0.6)] justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
+                {avaTime === true ? 
+                  'Unwrapping is available now!!!' : 
+                  (
+                    <>
+                      <div className="hidden 2xl:flex justify-center items-center">
+                        Unwrapping will be available on{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.days}</p>d{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.hours}</p>h{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.minutes}</p>m{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.seconds}</p>s
+                      </div>
+                      <div className="flex 2xl:hidden justify-center items-center">
+                        <p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.days}</p>d{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.hours}</p>h{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.minutes}</p>m{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.seconds}</p>s
+                      </div>
+                    </>
+                  )
+                }
+              </div>
               <div className="flex flex-row gap-3 items-center justify-end pr-16 lg:pr-0">
                 {selectList.length > 0 ? (
                   <button
@@ -419,6 +538,23 @@ const Header = () => {
                       </div>
                     ) : (
                       "Multi Wrap"
+                    )}
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {unSelectList.length > 0 ? (
+                  <button
+                    disabled={avaTime === true ? false : true}
+                    className="disabled:bg-[rgba(185,188,199,0.5)] min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-[Inter] font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
+                    onClick={() => handleMultiUnWrap()}
+                  >
+                    {unLoading ? (
+                      <div className="w-full h-full flex justify-center items-center">
+                        <PuffLoader color="#ffff" size={20} />
+                      </div>
+                    ) : (
+                      "Multi Unwrap"
                     )}
                   </button>
                 ) : (

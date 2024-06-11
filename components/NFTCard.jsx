@@ -10,9 +10,10 @@ import styles from "../styles/NFTCard.module.css";
 const NFTCard = ({ nft, isProfile }) => {
   const { isConnected } = useAccount();
 
-  const { selectList, setSelectList } = useContext(NFTContext);
+  const { avaTime, selectList, setSelectList, unSelectList, setUnSelectList } = useContext(NFTContext);
   const [copied, setCopied] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
+  const [isUnSelect, setIsUnSelect] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
   const nftContract_Addr = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDR;
@@ -28,6 +29,12 @@ const NFTCard = ({ nft, isProfile }) => {
       setIsSelect(false);
     }
   }, [selectList]);
+
+  useEffect(() => {
+    if (unSelectList.length === 0) {
+      setIsUnSelect(false);
+    }
+  }, [unSelectList]);
 
   const onImageError = (e) => {
     e.target.src = placeholderImage;
@@ -49,19 +56,23 @@ const NFTCard = ({ nft, isProfile }) => {
   };
 
   const handleCheckBox = (nft) => {
-    // Toggle the isSelect state for the current NFT
-    setIsSelect(!isSelect);
-
     // If the current state is false (NFT is not selected), add it to the selectList
     if (!isProfile) {
+      setIsSelect(!isSelect);
       if (isSelect === false) {
         setSelectList((prevList) => [...prevList, nft]); // append nft to the existing selectList
       }
       // If the current state is true (NFT is selected), remove it from the selectList
       else {
         setSelectList((prevList) =>
-          prevList.filter((item) => item?.edition !== nft?.edition)
-        );
+          prevList.filter((item) => item?.edition !== nft?.edition))
+      }
+    } else {
+      setIsUnSelect(!isUnSelect);
+      if (isUnSelect === false) {
+        setUnSelectList((prevUnList) => [...prevUnList, nft]);
+      } else {
+        setUnSelectList((prevUnList) => prevUnList.filter((item) => item?.metadata?.edition !== nft?.metadata.edition))
       }
     }
   };
@@ -86,22 +97,18 @@ const NFTCard = ({ nft, isProfile }) => {
       <div
         className="relative px-2 pt-2"
         onClick={() => {
-          if (!isProfile) {
-            handleCheckBox(nft);
-          }
+          handleCheckBox(nft);
         }}
       >
-        {!isProfile && (
-          <div className="absolute right-4 top-4">
-            <Checkbox
-              readOnly
-              checked={isSelect}
-              color="indigo"
-              ripple={false}
-              className="h-6 w-6 rounded-full border-gray-900/20 bg-gray-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-            />
-          </div>
-        )}
+        <div className="absolute right-4 top-4">
+          <Checkbox
+            readOnly
+            checked={isProfile ? isUnSelect : isSelect}
+            color="indigo"
+            ripple={false}
+            className="h-6 w-6 rounded-full border-gray-900/20 bg-gray-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+          />
+        </div>
 
         <img
           src={image ? image : placeholderImage}
@@ -146,9 +153,9 @@ const NFTCard = ({ nft, isProfile }) => {
         <button
           className={`${
             isConnected ? "" : "cursor-not-allowed"
-          } flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor font-[Inter] hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
+          } disabled:bg-[rgba(185,188,199,0.5)] flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor font-[Inter] hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
           onClick={() => handleClick()}
-          disabled={!isConnected}
+          disabled={!isConnected || (!isProfile ? false : avaTime === true ? false : true)}
         >
           {isProfile ? "UnWrap" : "Wrap"}
         </button>

@@ -11,6 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const Home = () => {
   const {
+    setUnSelectList,
     isLoading,
     setIsLoading,
     setAllNFT,
@@ -108,6 +109,7 @@ const Home = () => {
   }
 
   const fetchData = async () => {
+    setUnSelectList([]);
     try {
       if (from === 0) setIsLoading(true);
       setSubIsLoading(true);

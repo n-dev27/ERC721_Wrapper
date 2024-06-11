@@ -9,11 +9,12 @@ import { getOwnerNFTFetch } from "../utils/FetchNFT";
 import { NFTContext } from "../utils/context";
 
 const Profile = () => {
-  const { isLoading, setIsLoading, profileNFT, setProfileNFT } =
+  const { setSelectList, isLoading, setIsLoading, profileNFT, setProfileNFT } =
     useContext(NFTContext);
   const { address } = useAccount();
 
   useEffect(() => {
+    setSelectList([]);
     const fetchData = async () => {
       if (address) {
         try {
