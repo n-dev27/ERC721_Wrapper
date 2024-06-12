@@ -511,7 +511,7 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="absolute left-[40%] 2xl:left-[35%] text-[rgba(255,255,255,0.6)] justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
+              <div className="absolute left-[40%] text-[rgba(255,255,255,0.6)] justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
                 {avaTime === true ? 
                   'Unwrapping is available now!!!' : 
                   (
