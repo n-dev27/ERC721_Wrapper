@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAccount } from "wagmi";
-// import { config } from "../config/config";
-// import { tokenContract } from "../config/constant";
-// import tokenABI from "../../contract/RizoModule#Rizo.json";
-// import RIZO_token from "../../app/assets/RIZO_token.png";
 
 const style = {
   sellInput:
-    "flex w-full max-h-[90px] justify-between bg-[#1E2431] sm:bg-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_0_rgba(0,0,0,0.15)] rounded-[20px] px-4 py-2",
+    "flex w-full max-h-[90px] justify-between bg-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_0_rgba(0,0,0,0.15)] rounded-[20px] px-4 py-2",
   sellInputText: "w-full text-sm text-white font-[Inter] font-bold font-[Inter]",
   sellInputBalanceContainer: "flex flex-col",
   sellInputBalance:
@@ -28,24 +24,6 @@ const style = {
 
 const SellTokenInput = (props) => {
   const { address } = useAccount();
-
-  // useEffect(() => {
-  //   const fetchMarketPrices = async () => {
-  //     if (address) {
-  //       const tokenBalance = await readContract(config, {
-  //         address: tokenContract,
-  //         abi: tokenABI,
-  //         functionName: "balanceOf",
-  //         args: [address],
-  //         chainId: 1,
-  //       });
-  //       props.setRizoBalance(Number(tokenBalance) / 10 ** 18);
-  //     }
-  //   };
-
-  //   fetchMarketPrices();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [address, props.inputTokenAmount]);
 
   return (
     <div className={style.sellInput}>
@@ -70,19 +48,6 @@ const SellTokenInput = (props) => {
               </div>
             )}
           </div>
-          {/* <div className={style.sellInputMaxButton}>
-            <button
-              className="text-white"
-              onClick={() => {
-                props.setInputTokenAmount(props.tokenBal.toString());
-                props.setOutputTokenAmount(
-                  Math.floor(props.tokenBal / 5000000).toString()
-                );
-              }}
-            >
-              Max
-            </button>
-          </div> */}
         </div>
         <div className={style.sellInputInputContainer}>
           <input
@@ -98,12 +63,6 @@ const SellTokenInput = (props) => {
             maxLength="79"
             value={props.isProfile ? 4.75 : 5.1}
             readOnly
-            // onChange={(event) => {
-            //   props.setInputTokenAmount(event.target.value);
-            //   props.setOutputTokenAmount(
-            //     Math.floor(event.target.value / 5000000)
-            //   );
-            // }}
           />
         </div>
       </div>

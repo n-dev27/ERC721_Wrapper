@@ -12,7 +12,7 @@ import "react-simple-toasts/dist/theme/light.css"; // choose your theme
 import { initialFetch, getOwnerNFTFetch } from "../../utils/FetchNFT";
 import SellTokenInput from "./SellInputComponent";
 import SellTokenOutput from "./SellOutputComponent";
-import { config } from "../config/config";
+import { config } from "../config/newConfig";
 import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../../utils/context";

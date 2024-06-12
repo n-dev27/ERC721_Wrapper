@@ -3,39 +3,35 @@
 import * as React from "react";
 import {
   RainbowKitProvider,
-  getDefaultWallets,
-  getDefaultConfig,
+  // getDefaultWallets,
+  // getDefaultConfig,
 } from "@rainbow-me/rainbowkit";
-import {
-  argentWallet,
-  trustWallet,
-  ledgerWallet,
-} from "@rainbow-me/rainbowkit/wallets";
-import { mainnet, baseSepolia } from "wagmi/chains";
+// import {
+//   metaMaskWallet,
+//   coinbaseWallet
+// } from "@rainbow-me/rainbowkit/wallets";
+// import { mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
-import { config } from "./config";
+import { config } from "./newConfig";
 
-const { wallets } = getDefaultWallets();
+// const { wallets } = getDefaultWallets();
 
-const config1 = getDefaultConfig({
-  appName: "ERC721 Wrapper",
-  projectId: "YOUR_PROJECT_ID",
-  wallets: [
-    ...wallets,
-    {
-      groupName: "Other",
-      wallets: [argentWallet, trustWallet, ledgerWallet],
-    },
-  ],
-  chains: [
-    mainnet,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "false"
-      ? [baseSepolia]
-      : []),
-  ],
-  ssr: true,
-});
+// const config1 = getDefaultConfig({
+//   appName: "ERC721 Wrapper",
+//   projectId: "YOUR_PROJECT_ID",
+//   wallets: [
+//     // ...wallets,
+//     {
+//       groupName: "Other",
+//       wallets: [metaMaskWallet, coinbaseWallet],
+//     },
+//   ],
+//   chains: [
+//     mainnet,
+//   ],
+//   ssr: true,
+// });
 
 const queryClient = new QueryClient();
 

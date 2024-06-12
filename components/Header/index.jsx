@@ -15,7 +15,7 @@ import {
 import { PuffLoader } from "react-spinners";
 import toast, { toastConfig } from "react-simple-toasts";
 import "react-simple-toasts/dist/theme/light.css"; // choose your theme
-import { config } from "../config/config";
+import { config } from "../config/newConfig";
 import { NFTContext } from "../../utils/context";
 import { initialFetch } from "../../utils/FetchNFT";
 import menuData from "./menuData";
@@ -511,7 +511,7 @@ const Header = () => {
                   </ul>
                 </nav>
               </div>
-              <div className="absolute left-[40%] text-[rgba(255,255,255,0.6)] justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
+              <div className="absolute left-[40%] text-[rgba(255,255,255,0.6)] hidden xl:flex justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
                 {avaTime === true ? 
                   'Unwrapping is available now!!!' : 
                   (
@@ -562,7 +562,7 @@ const Header = () => {
                 )}
                 {address ? (
                   <button
-                    className="flex justify-center min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-[Inter] font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
+                    className="flex justify-center min-w-[80px] items-center min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-[Inter] font-medium py-2 px-2 sm:px-4 rounded-xl text-xs sm:text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
                     onClick={() => setIsClaimModalFlag(true)}
                   >
                     {loading2 ? (
@@ -571,7 +571,7 @@ const Header = () => {
                       </div>
                     ) : (
                       <div className="flex gap-1">
-                        <span className="hidden ssm:flex">Claim reward: </span>
+                        <span className="hidden sm:flex">Claim reward: </span>
                         <span>
                           {countLeadingZerosAfterDecimal(rewardValue)} ETH
                         </span>

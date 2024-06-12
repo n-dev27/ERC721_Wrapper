@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useAccount } from "wagmi";
-// import { config } from "../config/config";
-// import { wrapContract } from "../config/constant";
-// import wrapABI from "../../contract/MFT1155Module#RIZOMFTERC1155.json";
-// import RIZO_token from "../../app/assets/RIZO.jpg";
 
 const style = {
   sellOutput:
-    "flex w-full max-h-[90px] justify-between bg-[#343E6D] sm:bg-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_0_rgba(0,0,0,0.15)] rounded-[20px] px-4 py-2",
+    "flex w-full max-h-[90px] justify-between bg-[rgba(255,255,255,0.08)] shadow-[0_8px_24px_0_rgba(0,0,0,0.15)] rounded-[20px] px-4 py-2",
   sellOutputText: "w-full text-sm text-white font-[Inter] font-bold font-[Inter]",
   sellOutputBalanceContainer: "flex flex-col",
   sellOutputBalance:
@@ -28,43 +24,6 @@ const style = {
 
 const SellTokenOutput = (props) => {
   const { address } = useAccount();
-
-  // useEffect(() => {
-  //   const fetchMarketPrices = async () => {
-  //     if (address) {
-  //       const tokenBalance = await readContract(config, {
-  //         address: wrapContract,
-  //         abi: wrapABI,
-  //         functionName: "balanceOf",
-  //         args: [address, 1],
-  //         chainId: 1,
-  //       });
-  //       props.setMftBalance(Number(tokenBalance));
-  //     }
-  //   };
-
-  //   fetchMarketPrices();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [address, props.mftBalance]);
-
-  // useEffect(() => {
-  //   const fetchMarketPrices = async () => {
-  //     if (props.swapFlag && props.outputTokenAmount > 0) {
-  //       const contractValue = await readContract(config, {
-  //         address: wrapContract,
-  //         abi: wrapABI,
-  //         functionName: "prepareUnwrap",
-  //         args: [props.outputTokenAmount],
-  //       });
-  //       props.setUnWrapFee(Number(contractValue) / 10 ** 18);
-  //     } else {
-  //       props.setUnWrapFee("");
-  //     }
-  //   };
-
-  //   fetchMarketPrices();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [props.swapFlag, props.outputTokenAmount]);
 
   return (
     <div>
@@ -88,19 +47,6 @@ const SellTokenOutput = (props) => {
                 </div>
               )}
             </div>
-            {/* <div className={style.sellOutputMaxButton}>
-              <button
-                className="text-white"
-                onClick={() => {
-                  props.setOutputTokenAmount(props.mftBalance.toString());
-                  props.setInputTokenAmount(
-                    (props.mftBalance * 5000000).toString()
-                  );
-                }}
-              >
-                Max
-              </button>
-            </div> */}
           </div>
           <div className={style.sellOutputInputContainer}>
             <input
