@@ -431,7 +431,7 @@ const Header = () => {
                 <Dialog.Panel className="w-full max-w-[28rem] transform overflow-hidden rounded-2xl shadow bg-[#14253d] text-left align-middle transition-all border border-[rgba(255,255,255,0.1)]">
                   <div className="flex items-center justify-between px-4 pt-4 md:pt-5 md:px-8">
                     <h3 className="text-lg text-[rgba(255,255,255,0.8)] font-[Inter] font-semibold">
-                      Reward history per bohedz NFT
+                      Reward history per BOHEDZ NFT
                     </h3>
                     <button type="button" className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="course-modal"
                       onClick={() => setHistoryFlag(false)}
