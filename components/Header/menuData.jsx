@@ -11,5 +11,11 @@ const menuData = [
     path: "/profile",
     newTab: false,
   },
+  {
+    id: 3,
+    title: "Reward history",
+    path: "/history",
+    newTab: false,
+  },
 ];
 export default menuData;

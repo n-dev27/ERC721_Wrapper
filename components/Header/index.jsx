@@ -44,6 +44,8 @@ const Header = () => {
   const [sticky, setSticky] = useState(false);
   const [rewardValue, setRewardValue] = useState(0);
   const [isClaimModalFlag, setIsClaimModalFlag] = useState(false);
+  const [historyFlag, setHistoryFlag] = useState(false);
+  const [rewardHistory, setRewardHistory] = useState([]);
 
   const { address } = useAccount();
   const router = useRouter();
@@ -298,6 +300,29 @@ const Header = () => {
     }
   };
 
+  const handleRewardHistory = async () => {
+    setHistoryFlag(true);
+    try {
+      const result = await readContract(config, {
+        address: escrowAddr,
+        abi: escrowABI,
+        functionName: "calculateDailyNFTRewards",
+        chainId: 1
+      });
+
+      if (!result) {
+        console.error(`Failed to execute ${"reward history"} function on contract`);
+        throw new Error("Transaction Failed");
+      }
+
+      const numOfReward = result.map(item => Number(item) / 10 ** 18)
+      setRewardHistory(numOfReward);
+
+    } catch(error) {
+      console.log('reward history === ', error)
+    }
+  };
+
   function countLeadingZerosAfterDecimal(num) {
     let afterDecimal = num.toString().split(".")[1];
 
@@ -388,6 +413,61 @@ const Header = () => {
           </div>
         </Dialog>
       </Transition>
+
+      <Transition appear show={historyFlag} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={() => setHistoryFlag(false)}>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-[20px]" aria-hidden="true" />
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-[28rem] transform overflow-hidden rounded-2xl shadow bg-[#14253d] text-left align-middle transition-all border border-[rgba(255,255,255,0.1)]">
+                  <div className="flex items-center justify-between px-4 pt-4 md:pt-5 md:px-8">
+                    <h3 className="text-lg text-[rgba(255,255,255,0.8)] font-[Inter] font-semibold">
+                      Reward history per bohedz NFT
+                    </h3>
+                    <button type="button" className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="course-modal"
+                      onClick={() => setHistoryFlag(false)}
+                    >
+                      <XMarkIcon className='w-6 h-6' />
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                  </div>
+
+                  {rewardHistory.length !== 0 && (
+                    <div className="w-full flex flex-col px-4 py-4 md:px-8 md:py-5">
+                      {rewardHistory.map((item, index) => {
+                        return (
+                          <div key={index} className={`${index === 0 ? "border-none" : "border-t border-[rgba(255,255,255,0.2)]"} p-2 w-full flex gap-8 items-center`}>
+                            <div className="flex gap-1">
+                            <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter] min-w-[50px]">Daily {index + 1}</p>
+                            <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter]">:</p>
+                            </div>
+                            <p className="text-[rgba(255,255,255,0.8)] text-sm font-[Inter]">{countLeadingZerosAfterDecimal(item)} ETH</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  <div className='flex gap-6 px-4 pb-4 md:px-8 md:pb-5'>
+                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                      onClick={() => setHistoryFlag(false)}
+                    >Ok</button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
       <header
         className={`header top-0 left-0 z-40 flex w-full items-center bg-[#0d192b] !bg-opacity-90 ${
           sticky
@@ -465,7 +545,16 @@ const Header = () => {
                                 {menuItem.title}
                               </Link>
                             )
-                          ) : (
+                          ) : menuItem.id === 3 ? (
+                            address && (
+                              <button className={`flex py-2 text-base text-white font-[Inter] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                                onClick={() => handleRewardHistory()}
+                              >
+                                {menuItem.title}
+                              </button>
+                            )
+                          ) :
+                          (
                             <Link
                               href={menuItem.path}
                               className={`flex py-2 text-base text-white font-[Inter] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
