@@ -212,7 +212,7 @@ const Header = () => {
 
       if (!result) {
         setUnLoading(false);
-        console.error(`Failed to execute ${"wrap"} function on contract`);
+        console.error(`Failed to execute ${"batchUnwrap"} function on contract`);
         throw new Error("Transaction Failed");
       }
 
