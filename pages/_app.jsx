@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }) {
   const [nftBal, setNFTBal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [avaTime, setAvaTime] = useState(false);
+  const [isMultiFlag, setIsMultiFlag] = useState(false);
 
   return (
     <Providers>
@@ -37,7 +38,9 @@ function MyApp({ Component, pageProps }) {
           selectList,
           setSelectList,
           unSelectList,
-          setUnSelectList
+          setUnSelectList,
+          isMultiFlag,
+          setIsMultiFlag
         }}
       >
         <div className="flex items-center justify-center h-screen">

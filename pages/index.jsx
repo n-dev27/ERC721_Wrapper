@@ -2,6 +2,7 @@
 
 import React, { useEffect, useContext, useState, useCallback } from "react";
 import { GridLoader } from "react-spinners";
+import MultiWrapModal from "../components/ModalComponent/MultiModalComponent";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { initialFetch } from "../utils/FetchNFT";
@@ -15,6 +16,8 @@ const Home = () => {
     isLoading,
     setIsLoading,
     setAllNFT,
+    isMultiFlag, 
+    setIsMultiFlag
   } = useContext(NFTContext);
 
   // const [indices, setIndices] = useState({ fromIndex: 0, toIndex: 99 });
@@ -141,22 +144,27 @@ const Home = () => {
       <GridLoader color="#36d7b7" />
     </div>
   ) : data && data.size > 0 ? (
-    <InfiniteScroll
-      className={`${styles.gridContainerNFT} ${styles.example} w-full overflow-y-auto`}
-      dataLength={data.size} // This is important field to render the next data
-      next={loadMore}
-      hasMore={hasMore}
-      loader={<Loader isLoading={subLoading} />}
-      endMessage={
-        <p style={{ textAlign: 'center' }}>
+    <>
+      <InfiniteScroll
+        className={`${styles.gridContainerNFT} ${styles.example} w-full overflow-y-auto`}
+        dataLength={data.size} // This is important field to render the next data
+        next={loadMore}
+        hasMore={hasMore}
+        loader={<Loader isLoading={subLoading} />}
+        endMessage={<p style={{ textAlign: 'center' }}>
           <b>Yay! You have seen it all</b>
-        </p>
-      }
-    >
-      {data.map((nft, index) => (
-        <NFTCard key={index} nft={nft} isProfile={false}></NFTCard>
-      ))}
-    </InfiniteScroll>
+        </p>}
+      >
+        {data.map((nft, index) => (
+          <NFTCard key={index} nft={nft} isProfile={false}></NFTCard>
+        ))}
+      </InfiniteScroll>
+      <MultiWrapModal
+        isModal={isMultiFlag}
+        setIsModal={setIsMultiFlag}
+        isProfile={false}
+      />
+    </>
   ) : (
     <div className="w-full text-white text-center">
       <h2 className="text-5xl font-[Inter]">

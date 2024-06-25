@@ -17,11 +17,9 @@ import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../../utils/context";
 
-export default function WrapModal({
+export default function MultiWrapModal({
   isModal,
   setIsModal,
-  image,
-  nftData,
   isProfile,
 }) {
   const {
@@ -32,15 +30,18 @@ export default function WrapModal({
     setTokenBal,
     nftBal,
     setNFTBal,
+    selectList,
+    setSelectList,
+    unSelectList,
+    setUnSelectList,
   } = useContext(NFTContext);
 
   const [loading, setLoading] = useState(false);
 
-  const placeholderImage = "./no-image-icon.png";
   const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
-  const toast_string = isProfile ? "Unwrap is done successfully" : "Wrap is done successfully";
+  const toast_string = isProfile ? "Multi Unwrap is done successfully" : "Multi Wrap is done successfully";
 
   const { address } = useAccount();
 
@@ -73,15 +74,12 @@ export default function WrapModal({
     fetchMarketPrices();
   }, [address]);
 
-  const onImageError = (e) => {
-    e.target.src = placeholderImage;
-  };
-
   const closeModal = () => {
     setIsModal(false);
   };
 
   const clickWrap = async () => {
+    const tokenIDs = isProfile ? unSelectList.map((data) => data.metadata.edition) : selectList.map((data) => data.edition);
     setLoading(true);
     try {
       const contractFunction = isProfile ? "batchUnwrap" : "batchWrap";
@@ -89,7 +87,7 @@ export default function WrapModal({
         address: tokenAddr,
         abi: tokenABI,
         functionName: contractFunction,
-        args: [[isProfile ? nftData.metadata.edition : nftData.edition]],
+        args: [tokenIDs],
       });
 
       if (!result) {
@@ -124,6 +122,8 @@ export default function WrapModal({
         setTokenBal(Number(tokenBalance) / 10 ** 18);
         setNFTBal(Number(nftBalance));
         setLoading(false);
+        setSelectList([]);
+        setUnSelectList([]);
         await reFetchNFT(isProfile);
       }
     } catch (error) {
@@ -188,12 +188,6 @@ export default function WrapModal({
                 <div className="fixed inset-0 flex w-screen items-center bg-[#000000e6] justify-center p-4 backdrop-blur-sm">
                   <Dialog.Panel className="w-full max-w-[30rem] transform overflow-hidden rounded-[20px] shadow bg-[#14253d] text-left align-middle transition-all">
                     <div className="flex flex-col mx-auto p-4 rounded-[20px] bg-[#14253d] justify-between gap-4">
-                      <img
-                        src={image ? image : placeholderImage}
-                        alt="cover image"
-                        onError={onImageError}
-                        className="rounded-[20px] "
-                      ></img>
                       <div className="relative flex flex-col w-full gap-4">
                         {isProfile ? (
                           <>
@@ -201,7 +195,7 @@ export default function WrapModal({
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                number={1}
+                                number={isProfile ? unSelectList.length : selectList.length}
                               />
                             </div>
                             <div>
@@ -209,7 +203,7 @@ export default function WrapModal({
                                 isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                number={1}
+                                number={isProfile ? unSelectList.length : selectList.length}
                               />
                             </div>
                           </>
@@ -220,14 +214,14 @@ export default function WrapModal({
                                 isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                number={1}
+                                number={isProfile ? unSelectList.length : selectList.length}
                               />
                             </div>
                             <div>
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                number={1}
+                                number={isProfile ? unSelectList.length : selectList.length}
                               />
                             </div>
                           </>
@@ -258,10 +252,10 @@ export default function WrapModal({
                           </div>
                         ) : isProfile ? (
                           (
-                            "UnWrap"
+                            "Multi-UnWrap"
                           )
                         ) : (
-                          "Wrap"
+                          "Multi-Wrap"
                         )}
                       </button>
                     </div>

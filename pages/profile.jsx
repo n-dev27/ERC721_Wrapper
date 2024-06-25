@@ -3,14 +3,14 @@
 import React, { useEffect, useContext } from "react";
 import { useAccount } from "wagmi";
 import { GridLoader } from "react-spinners";
+import MultiWrapModal from "../components/ModalComponent/MultiModalComponent";
 import NFTCard from "../components/NFTCard";
 import styles from "../styles/index.module.css";
 import { getOwnerNFTFetch } from "../utils/FetchNFT";
 import { NFTContext } from "../utils/context";
 
 const Profile = () => {
-  const { setSelectList, isLoading, setIsLoading, profileNFT, setProfileNFT } =
-    useContext(NFTContext);
+  const { setSelectList, isLoading, setIsLoading, profileNFT, setProfileNFT, isMultiFlag, setIsMultiFlag } = useContext(NFTContext);
   const { address } = useAccount();
 
   useEffect(() => {
@@ -43,15 +43,22 @@ const Profile = () => {
       <GridLoader color="#36d7b7" />
     </div>
   ) : profileNFT && profileNFT.length > 0 ? (
-    <div
-      className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-40px)]`}
-    >
-      <div className={`${styles.gridContainerNFT} ${styles.example} w-full`}>
-        {profileNFT.map((nft, idx) => {
-          return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
-        })}
+    <>
+      <div
+        className={`${styles.flexCol} ${styles.main_container} h-[calc(100%-40px)]`}
+      >
+        <div className={`${styles.gridContainerNFT} ${styles.example} w-full`}>
+          {profileNFT.map((nft, idx) => {
+            return <NFTCard key={idx} nft={nft} isProfile={true}></NFTCard>;
+          })}
+        </div>
       </div>
-    </div>
+      <MultiWrapModal
+        isModal={isMultiFlag}
+        setIsModal={setIsMultiFlag}
+        isProfile={true}
+      />
+    </>
   ) : (
     <div className="">
       <h2 className="text-white text-5xl font-[Inter] w-full flex justify-center">

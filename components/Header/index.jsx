@@ -19,7 +19,6 @@ import { config } from "../config/newConfig";
 import { NFTContext } from "../../utils/context";
 import { initialFetch } from "../../utils/FetchNFT";
 import menuData from "./menuData";
-import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import escrowABI from "../../contract/ABI/EscrowABI.json";
 
@@ -30,11 +29,8 @@ const Header = () => {
     setIsLoading,
     setAllNFT,
     selectList,
-    setSelectList,
     unSelectList,
-    setUnSelectList,
-    setTokenBal,
-    setNFTBal,
+    setIsMultiFlag
   } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -50,7 +46,6 @@ const Header = () => {
   const { address } = useAccount();
   const router = useRouter();
 
-  const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
   const escrowAddr = process.env.NEXT_PUBLIC_ESCROW_NFT_HOLDER;
 
@@ -145,113 +140,11 @@ const Header = () => {
   };
 
   const handleMultiWrap = async () => {
-    setLoading(true);
-    const tokenIDs = selectList.map((data) => data.edition);
-    try {
-      const result = await writeContract(config, {
-        address: tokenAddr,
-        abi: tokenABI,
-        functionName: "batchWrap",
-        args: [tokenIDs],
-      });
-
-      if (!result) {
-        setLoading(false);
-        console.error(`Failed to execute ${"wrap"} function on contract`);
-        throw new Error("Transaction Failed");
-      }
-
-      const transaction = await waitForTransactionReceipt(config, {
-        hash: result,
-      });
-
-      if (!transaction) {
-        console.error("Receipt failed");
-        setLoading(false);
-        throw new Error("Receipt Failed");
-      }
-      const tokenBalance = await readContract(config, {
-        address: tokenAddr,
-        abi: tokenABI,
-        functionName: "balanceOf",
-        args: [address],
-      });
-
-      const nftBalance = await readContract(config, {
-        address: contractAddr,
-        abi: nftABI,
-        functionName: "balanceOf",
-        args: [address],
-      });
-
-      setTokenBal(Number(tokenBalance) / 10 ** 18);
-      setNFTBal(Number(nftBalance));
-      setLoading(false);
-      setSelectList([]);
-      await reFetchNFT();
-    } catch (error) {
-      setLoading(false);
-      if (error.code === 4001) {
-        console.log("Transaction was not approved by user.");
-      } else {
-        console.error(error);
-      }
-    }
+    setIsMultiFlag(true);
   };
 
   const handleMultiUnWrap = async () => {
-    setUnLoading(true);
-    const tokenIDs = unSelectList.map((data) => data.metadata.edition);
-    try {
-      const result = await writeContract(config, {
-        address: tokenAddr,
-        abi: tokenABI,
-        functionName: "batchUnwrap",
-        args: [tokenIDs],
-      });
-
-      if (!result) {
-        setUnLoading(false);
-        console.error(`Failed to execute ${"batchUnwrap"} function on contract`);
-        throw new Error("Transaction Failed");
-      }
-
-      const transaction = await waitForTransactionReceipt(config, {
-        hash: result,
-      });
-
-      if (!transaction) {
-        console.error("Receipt failed");
-        setUnLoading(false);
-        throw new Error("Receipt Failed");
-      }
-      const tokenBalance = await readContract(config, {
-        address: tokenAddr,
-        abi: tokenABI,
-        functionName: "balanceOf",
-        args: [address],
-      });
-
-      const nftBalance = await readContract(config, {
-        address: contractAddr,
-        abi: nftABI,
-        functionName: "balanceOf",
-        args: [address],
-      });
-
-      setTokenBal(Number(tokenBalance) / 10 ** 18);
-      setNFTBal(Number(nftBalance));
-      setUnLoading(false);
-      setUnSelectList([]);
-      await reFetchNFT();
-    } catch (error) {
-      setUnLoading(false);
-      if (error.code === 4001) {
-        console.log("Transaction was not approved by user.");
-      } else {
-        console.error(error);
-      }
-    }
+    setIsMultiFlag(true);
   };
 
   const handleClaim = async () => {

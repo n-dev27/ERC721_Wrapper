@@ -61,7 +61,7 @@ const SellTokenInput = (props) => {
             pattern="^[0-9]*[.,]?[0-9]*$"
             minLength="1"
             maxLength="79"
-            value={props.isProfile ? 4.75 : 5.1}
+            value={props.isProfile ? parseFloat(4.75 * props.number).toFixed(1) : parseFloat(5.1 * props.number).toFixed(1)}
             readOnly
           />
         </div>

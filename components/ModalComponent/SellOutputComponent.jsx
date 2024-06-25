@@ -60,7 +60,7 @@ const SellTokenOutput = (props) => {
               pattern="[0-9]*"
               minLength="1"
               maxLength="79"
-              value={1}
+              value={1 * props.number}
               readOnly
             />
           </div>
