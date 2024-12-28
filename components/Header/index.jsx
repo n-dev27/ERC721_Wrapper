@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/20/solid';
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -30,7 +30,7 @@ const Header = () => {
     setAllNFT,
     selectList,
     unSelectList,
-    setIsMultiFlag
+    setIsMultiFlag,
   } = useContext(NFTContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -73,8 +73,11 @@ const Header = () => {
           chainId: 1,
         });
 
-        const unlockDate = (Number(availableTime) * 1000 + 7 * 24 * 60 * 60 * 1000);      
-        
+        console.log("availableTime === ", availableTime);
+        const unlockDate =
+          Number(availableTime) * 1000 + 7 * 24 * 60 * 60 * 1000;
+        console.log("unlockDate === ", unlockDate);
+
         // Start the countdown timer
         const interval = setInterval(() => {
           const timeNow = new Date().getTime();
@@ -82,28 +85,31 @@ const Header = () => {
 
           // Time calculations for days, hours, minutes and seconds
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60)
+          );
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
+
           if (distance <= 0) {
             clearInterval(interval);
-            console.log('Contract deployment date reached!');
-            setAvaTime(true)
+            console.log("Contract deployment date reached!");
+            setAvaTime(true);
           } else {
             setAvaTime({
               days: days,
               hours: hours,
               minutes: minutes,
-              seconds: seconds
-            })
+              seconds: seconds,
+            });
           }
         }, 1000);
-
       } catch (err) {
         console.log(err);
       }
-    }
+    };
     fetchData();
   }, []);
 
@@ -200,19 +206,20 @@ const Header = () => {
         address: escrowAddr,
         abi: escrowABI,
         functionName: "calculateDailyNFTRewards",
-        chainId: 1
+        chainId: 1,
       });
 
       if (!result) {
-        console.error(`Failed to execute ${"reward history"} function on contract`);
+        console.error(
+          `Failed to execute ${"reward history"} function on contract`
+        );
         throw new Error("Transaction Failed");
       }
 
-      const numOfReward = result.map(item => Number(item) / 10 ** 18)
+      const numOfReward = result.map((item) => Number(item) / 10 ** 18);
       setRewardHistory(numOfReward);
-
-    } catch(error) {
-      console.log('reward history === ', error)
+    } catch (error) {
+      console.log("reward history === ", error);
     }
   };
 
@@ -239,7 +246,11 @@ const Header = () => {
   const reFetchNFT = async () => {
     try {
       isProfile ? setUnLoading(true) : setIsLoading(true);
-      toast(isProfile? "MultiUnwrap is done successfully" : "MultiWrap is done successfully");
+      toast(
+        isProfile
+          ? "MultiUnwrap is done successfully"
+          : "MultiWrap is done successfully"
+      );
       const result = await initialFetch(0, 99);
       const getWrappedTokens = await readContract(config, {
         address: contractAddr,
@@ -248,7 +259,7 @@ const Header = () => {
       });
 
       const transformedIDS = getWrappedTokens.map((id) => Number(id));
-      console.log('transformedIDS on reFetch === ', transformedIDS)
+      console.log("transformedIDS on reFetch === ", transformedIDS);
       const resultingArray = result.filter(
         (value) => !transformedIDS.includes(value.edition)
       );
@@ -263,8 +274,15 @@ const Header = () => {
   return (
     <>
       <Transition appear show={isClaimModalFlag} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => setIsClaimModalFlag(false)}>
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-[20px]" aria-hidden="true" />
+        <Dialog
+          as="div"
+          className="relative z-50"
+          onClose={() => setIsClaimModalFlag(false)}
+        >
+          <div
+            className="fixed inset-0 bg-black/30 backdrop-blur-[20px]"
+            aria-hidden="true"
+          />
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
@@ -281,24 +299,35 @@ const Header = () => {
                     <h3 className="text-lg text-[rgba(255,255,255,0.8)] font-[Inter] font-semibold">
                       Are you sure you want to claim the rewards?
                     </h3>
-                    <button type="button" className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="course-modal"
+                    <button
+                      type="button"
+                      className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
+                      data-modal-toggle="course-modal"
                       onClick={() => setIsClaimModalFlag(false)}
                     >
-                      <XMarkIcon className='w-6 h-6' />
+                      <XMarkIcon className="w-6 h-6" />
                       <span className="sr-only">Close modal</span>
                     </button>
                   </div>
 
-                  <div className='flex gap-6 px-4 pb-4 md:px-5 md:pb-5'>
-                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                  <div className="flex gap-6 px-4 pb-4 md:px-5 md:pb-5">
+                    <button
+                      type="button"
+                      className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
                       onClick={() => setIsClaimModalFlag(false)}
-                    >No, cancel</button>
-                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                    >
+                      No, cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
                       onClick={() => {
                         handleClaim();
                         setIsClaimModalFlag(false);
                       }}
-                    >Yes, I'm sure</button>
+                    >
+                      Yes, I'm sure
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -308,8 +337,15 @@ const Header = () => {
       </Transition>
 
       <Transition appear show={historyFlag} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => setHistoryFlag(false)}>
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-[20px]" aria-hidden="true" />
+        <Dialog
+          as="div"
+          className="relative z-50"
+          onClose={() => setHistoryFlag(false)}
+        >
+          <div
+            className="fixed inset-0 bg-black/30 backdrop-blur-[20px]"
+            aria-hidden="true"
+          />
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
@@ -326,10 +362,13 @@ const Header = () => {
                     <h3 className="text-lg text-[rgba(255,255,255,0.8)] font-[Inter] font-semibold">
                       Reward history per BOHEDZ NFT
                     </h3>
-                    <button type="button" className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="course-modal"
+                    <button
+                      type="button"
+                      className="text-gray-400 bg-transparent hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
+                      data-modal-toggle="course-modal"
                       onClick={() => setHistoryFlag(false)}
                     >
-                      <XMarkIcon className='w-6 h-6' />
+                      <XMarkIcon className="w-6 h-6" />
                       <span className="sr-only">Close modal</span>
                     </button>
                   </div>
@@ -338,22 +377,39 @@ const Header = () => {
                     <div className="w-full flex flex-col px-4 py-4 md:px-8 md:py-5">
                       {rewardHistory.map((item, index) => {
                         return (
-                          <div key={index} className={`${index === 0 ? "border-none" : "border-t border-[rgba(255,255,255,0.2)]"} p-2 w-full flex gap-8 items-center`}>
+                          <div
+                            key={index}
+                            className={`${
+                              index === 0
+                                ? "border-none"
+                                : "border-t border-[rgba(255,255,255,0.2)]"
+                            } p-2 w-full flex gap-8 items-center`}
+                          >
                             <div className="flex gap-1">
-                            <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter] min-w-[50px]">Daily {index + 1}</p>
-                            <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter]">:</p>
+                              <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter] min-w-[50px]">
+                                Daily {index + 1}
+                              </p>
+                              <p className="text-[rgba(255,255,255,0.6)] text-sm font-[Inter]">
+                                :
+                              </p>
                             </div>
-                            <p className="text-[rgba(255,255,255,0.8)] text-sm font-[Inter]">{countLeadingZerosAfterDecimal(item)} ETH</p>
+                            <p className="text-[rgba(255,255,255,0.8)] text-sm font-[Inter]">
+                              {countLeadingZerosAfterDecimal(item)} ETH
+                            </p>
                           </div>
                         );
                       })}
                     </div>
                   )}
 
-                  <div className='flex gap-6 px-4 pb-4 md:px-8 md:pb-5'>
-                    <button type="button" className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
+                  <div className="flex gap-6 px-4 pb-4 md:px-8 md:pb-5">
+                    <button
+                      type="button"
+                      className="py-1 px-4 text-sm font-medium text-[rgba(255,255,255,0.6)] font-[Inter] focus:outline-none bg-[rgba(255,255,255,0.05)] rounded-lg border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.8)] focus:z-10 focus:ring-4 focus:ring-gray-200"
                       onClick={() => setHistoryFlag(false)}
-                    >Ok</button>
+                    >
+                      Ok
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -440,14 +496,14 @@ const Header = () => {
                             )
                           ) : menuItem.id === 3 ? (
                             address && (
-                              <button className={`flex py-2 text-base text-white font-[Inter] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
+                              <button
+                                className={`flex py-2 text-base text-white font-[Inter] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
                                 onClick={() => handleRewardHistory()}
                               >
                                 {menuItem.title}
                               </button>
                             )
-                          ) :
-                          (
+                          ) : (
                             <Link
                               href={menuItem.path}
                               className={`flex py-2 text-base text-white font-[Inter] group-hover:opacity-70 lg:mr-0 lg:inline-flex lg:py-6 lg:px-0`}
@@ -494,19 +550,49 @@ const Header = () => {
                 </nav>
               </div>
               <div className="absolute left-[40%] text-[rgba(255,255,255,0.6)] hidden xl:flex justify-center items-center font-[Inter] text-lg font-semibold py-2 px-2 2xl:px-8 bg-[rgba(28,118,255,0.6)] rounded-xl">
-                {avaTime === true ? 
-                  'Unwrapping is available now!!!' : 
-                  (
-                    <>
-                      <div className="hidden 2xl:flex justify-center items-center">
-                        Unwrapping will be available on{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.days}</p>d{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.hours}</p>h{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.minutes}</p>m{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.seconds}</p>s
-                      </div>
-                      <div className="flex 2xl:hidden justify-center items-center">
-                        <p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.days}</p>d{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.hours}</p>h{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.minutes}</p>m{' '}<p className="text-2xl font-[Abel] mx-1 text-white">{avaTime.seconds}</p>s
-                      </div>
-                    </>
-                  )
-                }
+                {avaTime === true ? (
+                  "Unwrapping is available now!!!"
+                ) : (
+                  <>
+                    <div className="hidden 2xl:flex justify-center items-center">
+                      Unwrapping will be available on{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.days}
+                      </p>
+                      d{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.hours}
+                      </p>
+                      h{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.minutes}
+                      </p>
+                      m{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.seconds}
+                      </p>
+                      s
+                    </div>
+                    <div className="flex 2xl:hidden justify-center items-center">
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.days}
+                      </p>
+                      d{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.hours}
+                      </p>
+                      h{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.minutes}
+                      </p>
+                      m{" "}
+                      <p className="text-2xl font-[Abel] mx-1 text-white">
+                        {avaTime.seconds}
+                      </p>
+                      s
+                    </div>
+                  </>
+                )}
               </div>
               <div className="flex flex-row gap-3 items-center justify-end pr-16 lg:pr-0">
                 {selectList.length > 0 ? (
@@ -527,7 +613,7 @@ const Header = () => {
                 )}
                 {unSelectList.length > 0 ? (
                   <button
-                    disabled={avaTime === true ? false : true}
+                    // disabled={avaTime === true ? false : true}
                     className="disabled:bg-[rgba(185,188,199,0.5)] min-w-[115px] min-h-10 bg-[#1C76FF] hover:bg-[#5895f0] text-white font-[Inter] font-medium py-2 px-4 rounded-xl text-base cursor hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
                     onClick={() => handleMultiUnWrap()}
                   >

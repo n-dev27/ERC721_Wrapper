@@ -10,7 +10,8 @@ import styles from "../styles/NFTCard.module.css";
 const NFTCard = ({ nft, isProfile }) => {
   const { isConnected } = useAccount();
 
-  const { avaTime, selectList, setSelectList, unSelectList, setUnSelectList } = useContext(NFTContext);
+  const { avaTime, selectList, setSelectList, unSelectList, setUnSelectList } =
+    useContext(NFTContext);
   const [copied, setCopied] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
   const [isUnSelect, setIsUnSelect] = useState(false);
@@ -65,14 +66,19 @@ const NFTCard = ({ nft, isProfile }) => {
       // If the current state is true (NFT is selected), remove it from the selectList
       else {
         setSelectList((prevList) =>
-          prevList.filter((item) => item?.edition !== nft?.edition))
+          prevList.filter((item) => item?.edition !== nft?.edition)
+        );
       }
     } else {
       setIsUnSelect(!isUnSelect);
       if (isUnSelect === false) {
         setUnSelectList((prevUnList) => [...prevUnList, nft]);
       } else {
-        setUnSelectList((prevUnList) => prevUnList.filter((item) => item?.metadata?.edition !== nft?.metadata.edition))
+        setUnSelectList((prevUnList) =>
+          prevUnList.filter(
+            (item) => item?.metadata?.edition !== nft?.metadata.edition
+          )
+        );
       }
     }
   };
@@ -123,8 +129,12 @@ const NFTCard = ({ nft, isProfile }) => {
         className={`${styles.flexCol} ${styles.nft_textContainer} opacity-80`}
       >
         <div>
-          <h3 className="text-[#8bacda] font-[Inter]">{isProfile ? nft.title : nft.name}</h3>
-          <p className=" font-[Inter]">Id: {isProfile ? nft.metadata.edition : nft.edition}</p>
+          <h3 className="text-[#8bacda] font-[Inter]">
+            {isProfile ? nft.title : nft.name}
+          </h3>
+          <p className=" font-[Inter]">
+            Id: {isProfile ? nft.metadata.edition : nft.edition}
+          </p>
           <div>
             <p className="text-[14px] font-[Inter]">{`Collection: ${nftContract_Addr.substr(
               0,
@@ -155,7 +165,7 @@ const NFTCard = ({ nft, isProfile }) => {
             isConnected ? "" : "cursor-not-allowed"
           } disabled:bg-[rgba(185,188,199,0.5)] flex w-[90%] bg-[#1C76FF] font-medium rounded-[12px] h-10 justify-center items-center text-white text-base cursor font-[Inter] hover:text-gray-300 hover:bg-blue-500 transition-transform duration-200 ease-in-out hover:scale-[1.02]`}
           onClick={() => handleClick()}
-          disabled={!isConnected || (!isProfile ? false : avaTime === true ? false : true)}
+          disabled={!isConnected || !isProfile}
         >
           {isProfile ? "UnWrap" : "Wrap"}
         </button>
