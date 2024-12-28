@@ -13,6 +13,7 @@ import { initialFetch, getOwnerNFTFetch } from "../../utils/FetchNFT";
 import SellTokenInput from "./SellInputComponent";
 import SellTokenOutput from "./SellOutputComponent";
 import { config } from "../config/newConfig";
+import { exConfig } from "../config/exConfig";
 import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../../utils/context";
@@ -40,7 +41,9 @@ export default function WrapModal({
   const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
-  const toast_string = isProfile ? "Unwrap is done successfully" : "Wrap is done successfully";
+  const toast_string = isProfile
+    ? "Unwrap is done successfully"
+    : "Wrap is done successfully";
 
   const { address } = useAccount();
 
@@ -49,7 +52,7 @@ export default function WrapModal({
   useEffect(() => {
     const fetchMarketPrices = async () => {
       if (address) {
-        const tokenBalance = await readContract(config, {
+        const tokenBalance = await readContract(exConfig, {
           address: tokenAddr,
           abi: tokenABI,
           functionName: "balanceOf",
@@ -57,7 +60,7 @@ export default function WrapModal({
           chainId: 1,
         });
 
-        const nftBalance = await readContract(config, {
+        const nftBalance = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "balanceOf",
@@ -85,7 +88,7 @@ export default function WrapModal({
     setLoading(true);
     try {
       const contractFunction = isProfile ? "batchUnwrap" : "batchWrap";
-      const result = await writeContract(config, {
+      const result = await writeContract(exConfig, {
         address: tokenAddr,
         abi: tokenABI,
         functionName: contractFunction,
@@ -98,7 +101,7 @@ export default function WrapModal({
         throw new Error("Transaction Failed");
       }
 
-      const transaction = await waitForTransactionReceipt(config, {
+      const transaction = await waitForTransactionReceipt(exConfig, {
         hash: result,
       });
 
@@ -107,14 +110,14 @@ export default function WrapModal({
         setLoading(false);
         throw new Error("Receipt Failed");
       } else {
-        const tokenBalance = await readContract(config, {
+        const tokenBalance = await readContract(exConfig, {
           address: tokenAddr,
           abi: tokenABI,
           functionName: "balanceOf",
           args: [address],
         });
 
-        const nftBalance = await readContract(config, {
+        const nftBalance = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "balanceOf",
@@ -151,7 +154,7 @@ export default function WrapModal({
         setIsLoading(false);
       } else {
         const result = await initialFetch(1, 100);
-        const getWrappedTokens = await readContract(config, {
+        const getWrappedTokens = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "getWrappedTokenIds",
@@ -257,9 +260,7 @@ export default function WrapModal({
                             />
                           </div>
                         ) : isProfile ? (
-                          (
-                            "UnWrap"
-                          )
+                          "UnWrap"
                         ) : (
                           "Wrap"
                         )}

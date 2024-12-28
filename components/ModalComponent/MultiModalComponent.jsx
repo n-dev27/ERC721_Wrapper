@@ -16,12 +16,9 @@ import { config } from "../config/newConfig";
 import tokenABI from "../../contract/ABI/HYBRIDS.json";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import { NFTContext } from "../../utils/context";
+import { exConfig } from "../config/exConfig";
 
-export default function MultiWrapModal({
-  isModal,
-  setIsModal,
-  isProfile,
-}) {
+export default function MultiWrapModal({ isModal, setIsModal, isProfile }) {
   const {
     setIsLoading,
     setAllNFT,
@@ -41,7 +38,9 @@ export default function MultiWrapModal({
   const tokenAddr = process.env.NEXT_PUBLIC_BOHEDZ_TOKEN_ADDRESS;
   const contractAddr = process.env.NEXT_PUBLIC_BOHEDZ_WRAPPER_ADDRESS;
 
-  const toast_string = isProfile ? "Multi Unwrap is done successfully" : "Multi Wrap is done successfully";
+  const toast_string = isProfile
+    ? "Multi Unwrap is done successfully"
+    : "Multi Wrap is done successfully";
 
   const { address } = useAccount();
 
@@ -50,7 +49,7 @@ export default function MultiWrapModal({
   useEffect(() => {
     const fetchMarketPrices = async () => {
       if (address) {
-        const tokenBalance = await readContract(config, {
+        const tokenBalance = await readContract(exConfig, {
           address: tokenAddr,
           abi: tokenABI,
           functionName: "balanceOf",
@@ -58,7 +57,7 @@ export default function MultiWrapModal({
           chainId: 1,
         });
 
-        const nftBalance = await readContract(config, {
+        const nftBalance = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "balanceOf",
@@ -79,11 +78,13 @@ export default function MultiWrapModal({
   };
 
   const clickWrap = async () => {
-    const tokenIDs = isProfile ? unSelectList.map((data) => data.metadata.edition) : selectList.map((data) => data.edition);
+    const tokenIDs = isProfile
+      ? unSelectList.map((data) => data.metadata.edition)
+      : selectList.map((data) => data.edition);
     setLoading(true);
     try {
       const contractFunction = isProfile ? "batchUnwrap" : "batchWrap";
-      const result = await writeContract(config, {
+      const result = await writeContract(exConfig, {
         address: tokenAddr,
         abi: tokenABI,
         functionName: contractFunction,
@@ -96,7 +97,7 @@ export default function MultiWrapModal({
         throw new Error("Transaction Failed");
       }
 
-      const transaction = await waitForTransactionReceipt(config, {
+      const transaction = await waitForTransactionReceipt(exConfig, {
         hash: result,
       });
 
@@ -105,14 +106,14 @@ export default function MultiWrapModal({
         setLoading(false);
         throw new Error("Receipt Failed");
       } else {
-        const tokenBalance = await readContract(config, {
+        const tokenBalance = await readContract(exConfig, {
           address: tokenAddr,
           abi: tokenABI,
           functionName: "balanceOf",
           args: [address],
         });
 
-        const nftBalance = await readContract(config, {
+        const nftBalance = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "balanceOf",
@@ -151,7 +152,7 @@ export default function MultiWrapModal({
         setIsLoading(false);
       } else {
         const result = await initialFetch(1, 100);
-        const getWrappedTokens = await readContract(config, {
+        const getWrappedTokens = await readContract(exConfig, {
           address: contractAddr,
           abi: nftABI,
           functionName: "getWrappedTokenIds",
@@ -195,7 +196,11 @@ export default function MultiWrapModal({
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                number={isProfile ? unSelectList.length : selectList.length}
+                                number={
+                                  isProfile
+                                    ? unSelectList.length
+                                    : selectList.length
+                                }
                               />
                             </div>
                             <div>
@@ -203,7 +208,11 @@ export default function MultiWrapModal({
                                 isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                number={isProfile ? unSelectList.length : selectList.length}
+                                number={
+                                  isProfile
+                                    ? unSelectList.length
+                                    : selectList.length
+                                }
                               />
                             </div>
                           </>
@@ -214,14 +223,22 @@ export default function MultiWrapModal({
                                 isProfile={isProfile}
                                 tokenBal={tokenBal}
                                 setTokenBal={setTokenBal}
-                                number={isProfile ? unSelectList.length : selectList.length}
+                                number={
+                                  isProfile
+                                    ? unSelectList.length
+                                    : selectList.length
+                                }
                               />
                             </div>
                             <div>
                               <SellTokenOutput
                                 nftBal={nftBal}
                                 setNFTBal={setNFTBal}
-                                number={isProfile ? unSelectList.length : selectList.length}
+                                number={
+                                  isProfile
+                                    ? unSelectList.length
+                                    : selectList.length
+                                }
                               />
                             </div>
                           </>
@@ -251,9 +268,7 @@ export default function MultiWrapModal({
                             />
                           </div>
                         ) : isProfile ? (
-                          (
-                            "Multi-UnWrap"
-                          )
+                          "Multi-UnWrap"
                         ) : (
                           "Multi-Wrap"
                         )}

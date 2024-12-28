@@ -21,6 +21,7 @@ import { initialFetch } from "../../utils/FetchNFT";
 import menuData from "./menuData";
 import nftABI from "../../contract/ABI/HYBRIDSWRAPPER.json";
 import escrowABI from "../../contract/ABI/EscrowABI.json";
+import { exConfig } from "../config/exConfig";
 
 const Header = () => {
   const {
@@ -66,7 +67,7 @@ const Header = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const availableTime = await readContract(config, {
+        const availableTime = await readContract(exConfig, {
           address: escrowAddr,
           abi: escrowABI,
           functionName: "contractDeploymentTimestamp",
@@ -119,7 +120,7 @@ const Header = () => {
     const fetchData = async () => {
       if (address) {
         try {
-          const rewardResult = await readContract(config, {
+          const rewardResult = await readContract(exConfig, {
             address: escrowAddr,
             abi: escrowABI,
             functionName: "checkClaimableRewards",
@@ -156,7 +157,7 @@ const Header = () => {
   const handleClaim = async () => {
     setLoading2(true);
     try {
-      const result = await writeContract(config, {
+      const result = await writeContract(exConfig, {
         address: escrowAddr,
         abi: escrowABI,
         functionName: "claimRewards",
@@ -169,7 +170,7 @@ const Header = () => {
         throw new Error("Transaction Failed");
       }
 
-      const transaction = await waitForTransactionReceipt(config, {
+      const transaction = await waitForTransactionReceipt(exConfig, {
         hash: result,
       });
 
@@ -179,7 +180,7 @@ const Header = () => {
         throw new Error("Receipt Failed");
       }
 
-      const rewardResult = await readContract(config, {
+      const rewardResult = await readContract(exConfig, {
         address: escrowAddr,
         abi: escrowABI,
         functionName: "checkClaimableRewards",
@@ -202,7 +203,7 @@ const Header = () => {
   const handleRewardHistory = async () => {
     setHistoryFlag(true);
     try {
-      const result = await readContract(config, {
+      const result = await readContract(exConfig, {
         address: escrowAddr,
         abi: escrowABI,
         functionName: "calculateDailyNFTRewards",
@@ -252,7 +253,7 @@ const Header = () => {
           : "MultiWrap is done successfully"
       );
       const result = await initialFetch(0, 99);
-      const getWrappedTokens = await readContract(config, {
+      const getWrappedTokens = await readContract(exConfig, {
         address: contractAddr,
         abi: nftABI,
         functionName: "getWrappedTokenIds",
